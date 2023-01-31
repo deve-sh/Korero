@@ -1,0 +1,10 @@
+{
+	"name": "korero",
+	"version": "1.0.0",
+	"description": "A snippet that enables team communication for your app on any webpage.",
+	"main": "index.js",
+	"scripts": {},
+	"keywords": [],
+	"author": "Devesh Kumar",
+	"license": "MIT"
+}
