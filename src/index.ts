@@ -6,6 +6,7 @@ import {
 	INVALID_CONSTRUCTUR_ARGS_SUPPLIED,
 	INVALID_ENVIRONMENT,
 } from "./constants/errors";
+import initializeFirebase from "./firebase/app";
 
 /**
  * Usage:
@@ -23,7 +24,10 @@ class Korero {
 			throw new Error(INVALID_ENVIRONMENT);
 
 		this.firebaseCredentials = firebaseCredentials;
-		if (firebaseCredentials) this.mode = "firebase";
+		if (firebaseCredentials) {
+			this.mode = "firebase";
+			initializeFirebase(this.firebaseCredentials);
+		}
 	}
 
 	initialize() {}
