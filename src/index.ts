@@ -31,7 +31,4 @@ class Korero {
 	unmount() {}
 }
 
-// Expose for browser level usage
-if (typeof window !== "undefined") (window as any).Korero = Korero;
-
 export default Korero;

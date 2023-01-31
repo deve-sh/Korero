@@ -3,8 +3,17 @@
 	"version": "1.0.0",
 	"description": "A snippet that enables team communication for your app on any webpage.",
 	"main": "index.js",
-	"scripts": {},
+	"scripts": {
+		"compile": "tsc",
+		"bundle": "webpack",
+		"build": "npm run compile && npm run bundle"
+	},
 	"keywords": [],
 	"author": "Devesh Kumar",
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "^4.9.5",
+		"webpack": "^5.75.0",
+		"webpack-cli": "^5.0.1"
+	}
 }
