@@ -1,0 +1,21 @@
+A list of collections in Firestore for Korero to work, v0:
+
+comments:
+    url: string
+    content: string
+    user: string
+    user_email: string
+    user_name: string
+    replies: comment[]
+    createdAt: date
+    updatedAt: date
+    metadata: {
+        x: number
+        y: number
+        ...
+        selection: {
+            start
+            end
+            ...
+        }
+    }
