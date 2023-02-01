@@ -5,7 +5,7 @@ import type FirebaseCredentials from "../types/FirebaseCredentials";
 let firebaseApp: FirebaseApp;
 
 const initializeFirebase = (config: FirebaseCredentials) => {
-	firebaseApp = initializeApp(config);
+	firebaseApp = initializeApp(config, "korero-firebase-app");
 };
 
 export default initializeFirebase;
