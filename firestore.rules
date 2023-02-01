@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	function isSignedIn() {
+        let allowedEmailRegex = '...';  // You can remove this if you want anyone on your project to be able to comment.
+    	return request.auth != null && 
+            request.auth.uid != null &&
+            request.auth.token.email.matches(regex);    // Can be removed
+    }
+    
+    match /korero-comments/{commentId} {
+      allow read, create, update, delete: if isSignedIn();
+    }
+  }
+}
