@@ -11,6 +11,8 @@ import getFirestore from "../firebase/firestore";
 
 import type CommentInDatabase from "../types/CommentInDatabase";
 
+import configStore from "../config";
+
 const processCommentDocs = (
 	querySnapshot: QuerySnapshot<unknown>
 ): CommentInDatabase[] =>
@@ -28,11 +30,15 @@ export const getCommentsForPageQueryRef = ({ maxX, maxY, user }: Filters) => {
 	const url = window.location.origin + window.location.pathname;
 	const collectionRef = collection(getFirestore(), "korero-comments");
 
+	const { currentSiteVersion } = configStore.get();
+
 	const queryArgs: [
 		query: Query<unknown>,
 		...queryConstraints: QueryConstraint[]
 	] = [collectionRef, where("url", "==", url)];
 
+	if (currentSiteVersion)
+		queryArgs.push(where("siteVersion", "==", currentSiteVersion));
 	if (maxX) queryArgs.push(where("metadata.x", "<=", maxX));
 	if (maxY) queryArgs.push(where("metadata.y", "<=", maxY));
 	if (user) queryArgs.push(where("user", "==", user));
