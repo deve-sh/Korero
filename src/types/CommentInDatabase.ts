@@ -4,6 +4,7 @@ export default interface CommentInDatabase {
 	userEmail?: string;
 	userName?: string;
 	content: string;
+	siteVersion?: string;
 	replies: CommentInDatabase[];
 	createdAt: Date;
 	updatedAt: Date;
