@@ -7,6 +7,9 @@ import {
 	INVALID_ENVIRONMENT,
 } from "./constants/errors";
 import initializeFirebase from "./firebase/app";
+
+import configStore from "./config";
+
 import mountContainerDiv from "./core/mountContainerDiv";
 import unmountContainerDiv from "./core/unmountContainerDiv";
 
@@ -22,7 +25,7 @@ class Korero {
 	show: boolean = false;
 	commentingTurnedOn: boolean = false;
 
-	constructor({ firebaseCredentials }: ConstructorArgs = {}) {
+	constructor({ firebaseCredentials, options }: ConstructorArgs = {}) {
 		if (!firebaseCredentials)
 			throw new Error(INVALID_CONSTRUCTUR_ARGS_SUPPLIED);
 		if (typeof window === "undefined" || typeof document === "undefined")
@@ -33,6 +36,8 @@ class Korero {
 			this.mode = "firebase";
 			initializeFirebase(this.firebaseCredentials);
 		}
+
+		if (options) configStore.set(options);
 	}
 
 	initialize() {
