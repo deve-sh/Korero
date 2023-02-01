@@ -7,6 +7,8 @@ import {
 	INVALID_ENVIRONMENT,
 } from "./constants/errors";
 import initializeFirebase from "./firebase/app";
+import mountContainerDiv from "./core/mountContainerDiv";
+import unmountContainerDiv from "./core/unmountContainerDiv";
 
 /**
  * Usage:
@@ -16,6 +18,9 @@ class Korero {
 	apiKey?: string = "";
 	firebaseCredentials?: FirebaseCredentials;
 	mode?: OperationMode;
+
+	show: boolean = false;
+	commentingTurnedOn: boolean = false;
 
 	constructor({ firebaseCredentials }: ConstructorArgs = {}) {
 		if (!firebaseCredentials)
@@ -30,9 +35,20 @@ class Korero {
 		}
 	}
 
-	initialize() {}
+	initialize() {
+		this.show = true;
+		mountContainerDiv();
+	}
 
-	unmount() {}
+	toggleCommenting() {
+		this.commentingTurnedOn = !this.commentingTurnedOn;
+	}
+
+	unmount() {
+		this.show = false;
+		this.commentingTurnedOn = false;
+		unmountContainerDiv();
+	}
 }
 
 export default Korero;
