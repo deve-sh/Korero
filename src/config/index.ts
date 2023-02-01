@@ -12,7 +12,7 @@ const configStore = () => {
 			storedConfig = config;
 		},
 		get() {
-			return storedConfig;
+			return storedConfig || {};
 		},
 	};
 };
