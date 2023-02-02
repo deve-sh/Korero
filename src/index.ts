@@ -10,8 +10,7 @@ import initializeFirebase from "./firebase/app";
 
 import configStore from "./config";
 
-import mountContainerDiv from "./core/mountContainerDiv";
-import unmountContainerDiv from "./core/unmountContainerDiv";
+import { mountUI, unmountUI } from "./ui";
 
 /**
  * Usage:
@@ -23,7 +22,6 @@ class Korero {
 	mode?: OperationMode;
 
 	show: boolean = false;
-	commentingTurnedOn: boolean = false;
 
 	constructor({ firebaseCredentials, options }: ConstructorArgs = {}) {
 		if (!firebaseCredentials)
@@ -41,18 +39,11 @@ class Korero {
 	}
 
 	initialize() {
-		this.show = true;
-		mountContainerDiv();
-	}
-
-	toggleCommenting() {
-		this.commentingTurnedOn = !this.commentingTurnedOn;
+		mountUI();
 	}
 
 	unmount() {
-		this.show = false;
-		this.commentingTurnedOn = false;
-		unmountContainerDiv();
+		unmountUI();
 	}
 }
 
