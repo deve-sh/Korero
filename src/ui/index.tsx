@@ -4,6 +4,8 @@ import getContainerDiv from "./root/getContainerDiv";
 import mountContainerDiv from "./root/mountContainerDiv";
 import unmountContainerDiv from "./root/unmountContainerDiv";
 
+import KoreroApp from "./Globals/App";
+
 let root: ReactRoot;
 
 export const mountUI = () => {
@@ -13,7 +15,7 @@ export const mountUI = () => {
 	container = getContainerDiv() as HTMLElement;
 
 	root = createRoot(container);
-	root.render(<>Korero React App</>);
+	root.render(<KoreroApp />);
 };
 
 export const unmountUI = () => {
