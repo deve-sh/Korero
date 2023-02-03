@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es2015",
-		"jsx": "react-jsx",
+		"jsx": "preserve",
 		"module": "commonjs",
 		"allowJs": true,
 		"checkJs": true,
