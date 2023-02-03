@@ -1,7 +1,8 @@
 import type SupportedAuthMethods from "./SupportedAuthTypes";
+import type User from "./User";
 
 interface Config {
-	allowedUsersRegex?: RegExp;
+	isUserAllowed?: (user: User) => boolean | Promise<boolean>;
 	allowedSignInMethods?: SupportedAuthMethods[];
 	currentSiteVersion?: string;
 }
