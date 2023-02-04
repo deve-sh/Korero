@@ -4,7 +4,7 @@ WIP
 
 ### Why Firebase?
 
-Well, a lot of the people who stumble upon this library later will ask “Why Firebase?” followed with “_Why not Supabase?_” or something like “_Why not Mongo or REST Based setup?_”
+Well, a lot of the people who stumble upon this library later will ask “Why Firebase?” followed with “Why not Supabase?” or something like “Why not Mongo or REST Based setup?”
 
 Well the reasons are quite simple and straightforward:
 
