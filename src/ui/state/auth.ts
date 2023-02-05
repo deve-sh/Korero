@@ -1,8 +1,9 @@
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 import type User from "../../types/User";
 
-const authAtom = atom<User | null>(null);
+const authAtom = atomWithStorage<User | null>("korero-auth-user", null);
 
 const useAuth = () => useAtom(authAtom);
 
