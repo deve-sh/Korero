@@ -1,11 +1,14 @@
+import { useState } from "react";
 import styled from "@emotion/styled";
 
+import type SupportedAuthMethods from "../../types/SupportedAuthTypes";
 import { signIn } from "../../API/auth";
 
 import configStore from "../../config";
+import useAuth from "../state/auth";
+
 import GitHubIcon from "../../icons/GitHub";
 import GoogleIcon from "../../icons/Google";
-import useAuth from "../state/auth";
 
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
@@ -36,10 +39,22 @@ const ActionButton = styled.button`
 
 const RenderLoginMethods = () => {
 	const { allowedSignInMethods = [] } = configStore.get();
+
+	const [signingIn, setSigningIn] = useState(false);
+	const signInWithMethod = async (method: SupportedAuthMethods) => {
+		setSigningIn(true);
+		await signIn(method);
+		setSigningIn(false);
+	};
+
 	return (
 		<>
 			{allowedSignInMethods.map((signInMethod) => (
-				<ActionButton key={signInMethod} onClick={() => signIn(signInMethod)}>
+				<ActionButton
+					key={signInMethod}
+					onClick={() => signInWithMethod(signInMethod)}
+					disabled={signingIn}
+				>
 					{signInMethod === "github" ? <GitHubIcon /> : ""}
 					{signInMethod === "google" ? <GoogleIcon /> : ""}
 				</ActionButton>
