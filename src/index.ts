@@ -5,6 +5,8 @@ import type OperationMode from "./types/OperationMode";
 import {
 	INVALID_CONSTRUCTUR_ARGS_SUPPLIED,
 	INVALID_ENVIRONMENT,
+	INVALID_OPTIONS,
+	INVALID_SIGNIN_METHODS,
 } from "./constants/errors";
 import initializeFirebase from "./firebase/app";
 
@@ -34,7 +36,10 @@ class Korero {
 			initializeFirebase(this.firebaseCredentials);
 		}
 
-		if (options) configStore.set(options);
+		if (!options || typeof options !== "object")
+			throw new Error(INVALID_OPTIONS);
+		if (!options.allowedSignInMethods) throw new Error(INVALID_SIGNIN_METHODS);
+		configStore.set(options);
 	}
 
 	initialize() {
