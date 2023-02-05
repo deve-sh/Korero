@@ -28,6 +28,11 @@ class Korero {
 			throw new Error(INVALID_CONSTRUCTUR_ARGS_SUPPLIED);
 		if (typeof window === "undefined" || typeof document === "undefined")
 			throw new Error(INVALID_ENVIRONMENT);
+		if (!options || typeof options !== "object")
+			throw new Error(INVALID_OPTIONS);
+		if (!options.allowedSignInMethods) throw new Error(INVALID_SIGNIN_METHODS);
+
+		configStore.set(options);
 
 		this.firebaseCredentials = firebaseCredentials;
 		this.apiKey = apiKey || "";
@@ -35,11 +40,6 @@ class Korero {
 			this.mode = "firebase";
 			initializeFirebase(this.firebaseCredentials);
 		}
-
-		if (!options || typeof options !== "object")
-			throw new Error(INVALID_OPTIONS);
-		if (!options.allowedSignInMethods) throw new Error(INVALID_SIGNIN_METHODS);
-		configStore.set(options);
 	}
 
 	initialize() {

@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
-import { FaGithub, FaGoogle, FaSignInAlt } from "react-icons/fa";
 
 import { signIn } from "../../API/auth";
 
 import configStore from "../../config";
+import GitHubIcon from "../../icons/GitHub";
+import GoogleIcon from "../../icons/Google";
 import useAuth from "../state/auth";
 
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
+	min-width: 7rem;
 	background: #343434;
 	padding: 1rem;
 	color: #ffffff;
@@ -15,19 +17,31 @@ const CentralActionHandleDiv = styled.div`
 	align-items: center;
 	justify-content: center;
 	gap: 1rem;
+	bottom: 2.5rem;
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	max-width: fit-content;
 `;
 
-const ActionButton = styled.button``;
+const ActionButton = styled.button`
+	outline: none;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: #ffffff;
+	padding: 0;
+	margin: 0;
+`;
 
-const { allowedSignInMethods = [] } = configStore.get();
 const RenderLoginMethods = () => {
+	const { allowedSignInMethods = [] } = configStore.get();
 	return (
 		<>
-			<FaSignInAlt /> |
 			{allowedSignInMethods.map((signInMethod) => (
 				<ActionButton key={signInMethod} onClick={() => signIn(signInMethod)}>
-					{signInMethod === "github" ? <FaGithub /> : ""}
-					{signInMethod === "google" ? <FaGoogle /> : ""}
+					{signInMethod === "github" ? <GitHubIcon /> : ""}
+					{signInMethod === "google" ? <GoogleIcon /> : ""}
 				</ActionButton>
 			))}
 		</>
@@ -35,7 +49,7 @@ const RenderLoginMethods = () => {
 };
 
 const CentralActionHandle = () => {
-	const user = useAuth();
+	const [user] = useAuth();
 
 	return (
 		<CentralActionHandleDiv>
