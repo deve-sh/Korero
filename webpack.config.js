@@ -4,7 +4,7 @@ module.exports = {
 	entry: "./dist/index.js",
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "index.js",
+		filename: "umd.js",
 		libraryExport: "default",
 		library: "korero",
 		libraryTarget: "umd",

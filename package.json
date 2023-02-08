@@ -1,13 +1,15 @@
 {
 	"name": "korero",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "A snippet that enables team communication for your app on any webpage.",
 	"main": "index.js",
 	"scripts": {
 		"compile": "tsc",
 		"bundle": "webpack",
 		"build": "npm run compile && npm run bundle",
-		"dev": "node ./scripts/dev.js"
+		"dev": "node ./scripts/dev.js",
+		"prepub": "node ./scripts/prepub.js",
+		"pub": "cd dist && npm publish"
 	},
 	"keywords": [],
 	"author": "Devesh Kumar",
