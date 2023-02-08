@@ -20,7 +20,7 @@ const HTMLFileTemplate = `
 		<title>Korero - Try it out</title>
 	</head>
 	<body>
-		<script type="text/javascript" src="../dist/index.js"></script>
+		<script type="text/javascript" src="../dist/umd.js"></script>
 		<script defer>
 			const k = new korero({
 				firebaseCredentials: ${firebaseCredentials},
