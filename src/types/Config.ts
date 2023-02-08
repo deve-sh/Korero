@@ -5,6 +5,7 @@ interface Config {
 	isUserAllowed?: (user: User) => boolean | Promise<boolean>;
 	allowedSignInMethods?: SupportedAuthMethods[];
 	currentSiteVersion?: string;
+	whitelistedHosts?: string[];
 }
 
 export default Config;

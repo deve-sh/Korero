@@ -7,6 +7,7 @@ import {
 	INVALID_ENVIRONMENT,
 	INVALID_OPTIONS,
 	INVALID_SIGNIN_METHODS,
+	INVALID_HOST,
 } from "./constants/errors";
 import initializeFirebase from "./firebase/app";
 
@@ -30,7 +31,13 @@ class Korero {
 			throw new Error(INVALID_ENVIRONMENT);
 		if (!options || typeof options !== "object")
 			throw new Error(INVALID_OPTIONS);
-		if (!options.allowedSignInMethods) throw new Error(INVALID_SIGNIN_METHODS);
+		if (!options.allowedSignInMethods || !options.allowedSignInMethods.length)
+			throw new Error(INVALID_SIGNIN_METHODS);
+		if (
+			options.whitelistedHosts &&
+			!options.whitelistedHosts.includes(window.location.hostname)
+		)
+			throw new Error(INVALID_HOST);
 
 		configStore.set(options);
 

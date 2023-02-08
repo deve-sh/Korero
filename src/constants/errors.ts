@@ -8,3 +8,5 @@ export const INVALID_OPTIONS = "Korero: An options object is required.";
 
 export const INVALID_SIGNIN_METHODS =
 	"Korero: Sign In Methods not passed. Required at least one sign in method. Google, GitHub";
+
+export const INVALID_HOST = "Korero: Hostname unauthorized.";
