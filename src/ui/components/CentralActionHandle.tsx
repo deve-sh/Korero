@@ -21,6 +21,7 @@ const CentralActionHandleDiv = styled.div`
 	padding: 1rem;
 	color: #ffffff;
 	display: flex;
+	box-shadow: 0px 8px 30px rgb(0 0 0 / 25%);
 	align-items: center;
 	justify-content: center;
 	gap: 1rem;
