@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "@emotion/styled";
 
 import type SupportedAuthMethods from "../../types/SupportedAuthTypes";
-import { signIn } from "../../API/auth";
+import { signIn, signOut } from "../../API/auth";
 
 import configStore from "../../config";
 import useAuth from "../state/auth";
+import useIsCommentingOn from "../state/commenting";
 
 import GitHubIcon from "../../icons/GitHub";
 import GoogleIcon from "../../icons/Google";
+import TurnOnCommentingIcon from "../../icons/TurnOnCommenting";
+import TurnOffCommentingIcon from "../../icons/TurnOffCommenting";
+import LogoutIcon from "../../icons/Logout";
 
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
@@ -41,11 +45,11 @@ const RenderLoginMethods = () => {
 	const { allowedSignInMethods = [] } = configStore.get();
 
 	const [signingIn, setSigningIn] = useState(false);
-	const signInWithMethod = async (method: SupportedAuthMethods) => {
+	const signInWithMethod = useCallback(async (method: SupportedAuthMethods) => {
 		setSigningIn(true);
 		await signIn(method);
 		setSigningIn(false);
-	};
+	}, []);
 
 	return (
 		<>
@@ -63,12 +67,27 @@ const RenderLoginMethods = () => {
 	);
 };
 
+const RenderActionOptions = () => {
+	const [isCommentingOn, setIsCommentingOn] = useIsCommentingOn();
+
+	return (
+		<>
+			<ActionButton onClick={() => setIsCommentingOn(!isCommentingOn)}>
+				{!isCommentingOn ? <TurnOnCommentingIcon /> : <TurnOffCommentingIcon />}
+			</ActionButton>
+			<ActionButton onClick={signOut}>
+				<LogoutIcon />
+			</ActionButton>
+		</>
+	);
+};
+
 const CentralActionHandle = () => {
 	const [user] = useAuth();
 
 	return (
 		<CentralActionHandleDiv>
-			{!user ? <RenderLoginMethods /> : ""}
+			{!user ? <RenderLoginMethods /> : <RenderActionOptions />}
 		</CentralActionHandleDiv>
 	);
 };
