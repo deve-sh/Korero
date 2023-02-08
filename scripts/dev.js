@@ -1,7 +1,8 @@
 const liveServer = require("live-server");
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 const chokidar = require("chokidar");
-const { writeFileSync } = require("fs");
+const { mkdirSync, writeFileSync } = require("fs");
+const open = require("open");
 
 const firebaseCredentials =
 	process.env.KORERO_FIREBASE_CREDENTIALS || process.argv[2];
@@ -36,24 +37,33 @@ const HTMLFileTemplate = `
 </html>
 `;
 
-const printExecResult = (error, stdout, stderr) => {
-	console.log(error);
-	console.log(stdout);
-	console.log(stderr);
-};
-
-writeFileSync("./dev/index.html", HTMLFileTemplate);
+let lastBuildEventTriggeredAt = null;
 chokidar.watch("./src").on("change", (path) => {
 	console.log(
 		"Change in file: ",
 		path,
 		", rebuilding app, this usually takes 1-8 seconds."
 	);
-	exec("npm run build", printExecResult);
+	if (
+		!lastBuildEventTriggeredAt ||
+		lastBuildEventTriggeredAt - new Date().getTime() > 2000
+	) {
+		lastBuildEventTriggeredAt = new Date().getTime();
+		execSync("npm run build", { stdio: "inherit" });
+	}
 });
 
 // Create a build and start the live server.
-exec("npm run build", printExecResult); // Initial build
+
+// Write index.html file.
+try {
+	mkdirSync("./dev");
+} catch {}
+
+writeFileSync("./dev/index.html", HTMLFileTemplate);
+
+console.log("Creating initial build for dev server...");
+execSync("npm run build", { stdio: "inherit" }); // Initial build
 const liveServerParams = {
 	port: 5500,
 	host: "localhost",
@@ -65,4 +75,6 @@ const liveServerParams = {
 	logLevel: 2,
 };
 liveServer.start(liveServerParams);
-console.log("Live Server started at: http://localhost:5500/dev/index.html");
+const liveServerURL = "http://localhost:5500/dev/index.html";
+console.log("Live Server started at: " + liveServerURL);
+open(liveServerURL);
