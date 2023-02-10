@@ -105,6 +105,7 @@ const RenderActionOptions = ({
 
 				// Now that the user has selected an element to comment on, reset the cursor.
 				removeCommentCursorFromBody();
+				setIsCommentingOn(false);
 			};
 
 			mountClickListenerForComment(onAnyElementClick);
