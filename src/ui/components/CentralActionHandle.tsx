@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import type SupportedAuthMethods from "../../types/SupportedAuthTypes";
@@ -7,6 +7,11 @@ import { signIn, signOut } from "../../API/auth";
 import configStore from "../../config";
 import useAuth from "../state/auth";
 import useIsCommentingOn from "../state/commenting";
+import useCurrentComment from "../state/currentComment";
+
+import mountClickListenerForComment from "../../utils/mountClickListenerForComment";
+import unmountClickListenerForComment from "../../utils/unmountClickListenerForComments";
+import getAllIdentifyingAttributesForElement from "../../utils/getAllIdentifyingAttrsForElement";
 
 import GitHubIcon from "../../icons/GitHub";
 import GoogleIcon from "../../icons/Google";
@@ -70,6 +75,27 @@ const RenderLoginMethods = () => {
 
 const RenderActionOptions = () => {
 	const [isCommentingOn, setIsCommentingOn] = useIsCommentingOn();
+	const [, setCurrentComment] = useCurrentComment();
+	const [user] = useAuth();
+
+	useEffect(() => {
+		if (isCommentingOn && user) {
+			const onElementClick = (event: PointerEvent | MouseEvent) => {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const target = event.target as HTMLElement;
+				if (!target) return;
+
+				const elementIdentifiers =
+					getAllIdentifyingAttributesForElement(target);
+				setCurrentComment({ user, content: "", element: elementIdentifiers });
+			};
+
+			mountClickListenerForComment(onElementClick);
+			return () => unmountClickListenerForComment(onElementClick);
+		}
+	}, [isCommentingOn, user]);
 
 	return (
 		<>
