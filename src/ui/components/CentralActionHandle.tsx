@@ -18,6 +18,7 @@ import GoogleIcon from "../../icons/Google";
 import TurnOnCommentingIcon from "../../icons/TurnOnCommenting";
 import TurnOffCommentingIcon from "../../icons/TurnOffCommenting";
 import LogoutIcon from "../../icons/Logout";
+import { removeCommentCursorFromBody } from "../../utils/modifyCommentCursor";
 
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
@@ -84,7 +85,7 @@ const RenderActionOptions = ({
 
 	useEffect(() => {
 		if (isCommentingOn && user) {
-			const onElementClick = (event: PointerEvent | MouseEvent) => {
+			const onAnyElementClick = (event: PointerEvent | MouseEvent) => {
 				const target = event.target as HTMLElement;
 				if (!target) return;
 
@@ -100,10 +101,13 @@ const RenderActionOptions = ({
 				const elementIdentifiers =
 					getAllIdentifyingAttributesForElement(target);
 				setCurrentComment({ user, content: "", element: elementIdentifiers });
+
+				// Now that the user has selected an element to comment on, reset the cursor.
+				removeCommentCursorFromBody();
 			};
 
-			mountClickListenerForComment(onElementClick);
-			return () => unmountClickListenerForComment(onElementClick);
+			mountClickListenerForComment(onAnyElementClick);
+			return () => unmountClickListenerForComment(onAnyElementClick);
 		}
 	}, [isCommentingOn, user]);
 
