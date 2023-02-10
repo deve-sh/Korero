@@ -1,6 +1,9 @@
-import styled from "@emotion/styled";
 import { ChangeEvent, FormEvent, useEffect, useRef } from "react";
+import styled from "@emotion/styled";
+
 import SendIcon from "../../icons/Send";
+
+import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
 
 const CommentCreationBoxDiv = styled.div`
@@ -49,6 +52,7 @@ const SendIconButton = styled.button`
 const CommentCreationBox = () => {
 	const commentCreationBoxRef = useRef<HTMLDivElement | null>(null);
 	const [currentComment, setCurrentComment] = useCurrentComment();
+	const [, setIsCommentingOn] = useIsCommentingOn();
 
 	const onCommentTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		event.persist();
@@ -65,8 +69,10 @@ const CommentCreationBox = () => {
 		if (currentComment?.element?.selector) {
 			const onClick = (event: PointerEvent | MouseEvent) => {
 				if (!event.target || !commentCreationBoxRef.current) return;
-				if (!commentCreationBoxRef.current.contains(event.target as Node))
+				if (!commentCreationBoxRef.current.contains(event.target as Node)) {
 					setCurrentComment(null);
+					setIsCommentingOn(true);
+				}
 			};
 
 			window.addEventListener("click", onClick);
