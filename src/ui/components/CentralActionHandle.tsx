@@ -23,6 +23,7 @@ import { removeCommentCursorFromBody } from "../../utils/modifyCommentCursor";
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
 	min-width: 7rem;
+	cursor: pointer;
 	background: #343434;
 	padding: 1rem;
 	color: #ffffff;
