@@ -17,12 +17,14 @@ const getElementUniqueSelector = (element: HTMLElement) => {
 
 const getAllIdentifyingAttributesForElement = (element: HTMLElement) => {
 	const attributes = Array.from(element.attributes).map((attribute) => ({
-		[attribute.name]: attribute.value,
+		name: attribute.name,
+		value: attribute.value,
 	}));
 	const elementUniqueSelector = getElementUniqueSelector(element);
-	const attributeBasedSelector =
+	const attributeBasedSelector = (
 		`${element.tagName}` +
-		attributes.map((attribute) => `[${attribute.name}="${attribute.value}"]`);
+		attributes.map((attribute) => `[${attribute.name}="${attribute.value}"]`)
+	).toLowerCase();
 
 	return {
 		selector: elementUniqueSelector,
