@@ -46,7 +46,7 @@ chokidar.watch("./src").on("change", (path) => {
 	);
 	if (
 		!lastBuildEventTriggeredAt ||
-		lastBuildEventTriggeredAt - new Date().getTime() > 2000
+		new Date().getTime() - lastBuildEventTriggeredAt > 2000
 	) {
 		lastBuildEventTriggeredAt = new Date().getTime();
 		execSync("npm run build", { stdio: "inherit" });
