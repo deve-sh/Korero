@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 
 import type SupportedAuthMethods from "../../types/SupportedAuthTypes";
@@ -73,7 +73,11 @@ const RenderLoginMethods = () => {
 	);
 };
 
-const RenderActionOptions = () => {
+const RenderActionOptions = ({
+	centralActionHandleDivRef,
+}: {
+	centralActionHandleDivRef: React.MutableRefObject<HTMLDivElement | null>;
+}) => {
 	const [isCommentingOn, setIsCommentingOn] = useIsCommentingOn();
 	const [, setCurrentComment] = useCurrentComment();
 	const [user] = useAuth();
@@ -81,11 +85,17 @@ const RenderActionOptions = () => {
 	useEffect(() => {
 		if (isCommentingOn && user) {
 			const onElementClick = (event: PointerEvent | MouseEvent) => {
-				event.preventDefault();
-				event.stopPropagation();
-
 				const target = event.target as HTMLElement;
 				if (!target) return;
+
+				if (
+					centralActionHandleDivRef.current &&
+					centralActionHandleDivRef.current.contains(target)
+				)
+					return;
+
+				event.preventDefault();
+				event.stopPropagation();
 
 				const elementIdentifiers =
 					getAllIdentifyingAttributesForElement(target);
@@ -110,11 +120,18 @@ const RenderActionOptions = () => {
 };
 
 const CentralActionHandle = () => {
+	const centralActionHandleDivRef = useRef<HTMLDivElement | null>(null);
 	const [user] = useAuth();
 
 	return (
-		<CentralActionHandleDiv>
-			{!user ? <RenderLoginMethods /> : <RenderActionOptions />}
+		<CentralActionHandleDiv ref={centralActionHandleDivRef}>
+			{!user ? (
+				<RenderLoginMethods />
+			) : (
+				<RenderActionOptions
+					centralActionHandleDivRef={centralActionHandleDivRef}
+				/>
+			)}
 		</CentralActionHandleDiv>
 	);
 };
