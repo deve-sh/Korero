@@ -199,7 +199,7 @@ const CommentCreationBox = () => {
 				<CommentCreationTextarea
 					onChange={onCommentTextChange}
 					value={currentComment.content}
-					placeholder="Enter Your Comment here.\n\n"
+					placeholder="Enter Your Comment here."
 				/>
 				<SendIconButton disabled={inserting} title="Send" type="submit">
 					<SendIcon />

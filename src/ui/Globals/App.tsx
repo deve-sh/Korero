@@ -5,6 +5,7 @@ import useOnAuthStateChange from "./useOnAuthStateChange";
 
 import CentralActionHandle from "../components/CentralActionHandle";
 import CommentCreationBox from "../components/CommentCreationBox";
+import CommentThread from "../components/CommentThread";
 
 import { getCommentsForPageQueryRef, processCommentDocs } from "../../API";
 import usePageCommentsStore from "../state/pageComments";
@@ -12,7 +13,7 @@ import usePageCommentsStore from "../state/pageComments";
 const KoreroApp = () => {
 	useOnAuthStateChange();
 
-	const [, setPageComments] = usePageCommentsStore();
+	const [pageComments, setPageComments] = usePageCommentsStore();
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
@@ -20,6 +21,7 @@ const KoreroApp = () => {
 			(snapshot) => {
 				const processedCommentsDocs = processCommentDocs(snapshot);
 				setPageComments(processedCommentsDocs);
+				console.log(processedCommentsDocs);
 			},
 			console.error
 		);
@@ -33,6 +35,9 @@ const KoreroApp = () => {
 		<>
 			<CommentCreationBox />
 			<CentralActionHandle />
+			{pageComments.map((comment) => (
+				<CommentThread comment={comment} key={comment.id} />
+			))}
 		</>
 	);
 };
