@@ -6,7 +6,9 @@
 	"scripts": {
 		"compile": "tsc",
 		"bundle": "webpack",
+		"bundle:dev": "webpack --mode=development",
 		"build": "npm run compile && npm run bundle",
+		"build:dev": "npm run compile && npm run bundle:dev",
 		"dev": "node ./scripts/dev.js",
 		"prepub": "node ./scripts/prepub.js",
 		"pub": "cd dist && npm publish"
