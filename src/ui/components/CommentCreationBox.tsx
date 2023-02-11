@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, useEffect, useRef } from "react";
+import {
+	type ChangeEvent,
+	type FormEvent,
+	useEffect,
+	useMemo,
+	useRef,
+} from "react";
 import styled from "@emotion/styled";
 
 import SendIcon from "../../icons/Send";
@@ -6,14 +12,18 @@ import SendIcon from "../../icons/Send";
 import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
 
-const CommentCreationBoxDiv = styled.div`
+const CommentCreationBoxDiv = styled.div<{
+	$left?: number;
+	$top?: number;
+}>`
 	border-radius: 0.25rem;
 	box-shadow: 0px 8px 30px rgb(0 0 0 / 25%);
 	padding: 0.875rem;
 	position: fixed;
-	top: 2.5rem;
-	left: 5rem;
-	min-width: 12.5rem;
+	width: 12.5rem;
+	background: #ffffff;
+	${(props) => (props.$left ? "left: " + props.$left + ";" : "")}
+	${(props) => (props.$top ? "top: " + props.$top + ";" : "")}
 
 	form {
 		margin-block-end: 0;
@@ -84,8 +94,49 @@ const CommentCreationBox = () => {
 		event.preventDefault();
 	};
 
+	const left = useMemo(() => {
+		if (!currentComment) return;
+
+		const partOutsideScreen =
+			window.innerWidth - currentComment.position.x - 200 < 0
+				? window.innerWidth - currentComment.position.x - 200 - 50
+				: 0;
+
+		return currentComment.position.x + partOutsideScreen;
+	}, [currentComment?.position?.x]);
+
+	const clickedDOMElement = useMemo(() => {
+		if (!currentComment) return;
+		return document.querySelector(
+			currentComment.element.selector
+		) as HTMLElement;
+	}, [currentComment?.element?.selector]);
+
+	const positionRelativeToClickedElement = useMemo(() => {
+		if (!clickedDOMElement || !currentComment) return {};
+		const relativeLeft =
+			currentComment.position.x - clickedDOMElement.offsetLeft;
+		const relativeTop = currentComment.position.y - clickedDOMElement.offsetTop;
+		const relativeLeftPercentage = relativeLeft / clickedDOMElement.clientWidth;
+		const relativeTopPercentage = relativeTop / clickedDOMElement.clientHeight;
+		return {
+			relativeLeft,
+			relativeTop,
+			relativeLeftPercentage,
+			relativeTopPercentage,
+		};
+	}, [
+		clickedDOMElement,
+		currentComment?.position?.x,
+		currentComment?.position?.y,
+	]);
+
 	return currentComment ? (
-		<CommentCreationBoxDiv ref={commentCreationBoxRef}>
+		<CommentCreationBoxDiv
+			ref={commentCreationBoxRef}
+			$top={currentComment.position.y}
+			$left={left}
+		>
 			<form onSubmit={onSubmit}>
 				<CommentCreationTextarea
 					onChange={onCommentTextChange}
