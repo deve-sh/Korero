@@ -4,13 +4,18 @@ import {
 	useEffect,
 	useMemo,
 	useRef,
+	useCallback,
+	useState,
 } from "react";
 import styled from "@emotion/styled";
-
 import SendIcon from "../../icons/Send";
 
+import useAuth from "../state/auth";
 import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
+
+import { createCommentForPage } from "../../API";
+import type CommentInDatabase from "../../types/CommentInDatabase";
 
 const CommentCreationBoxDiv = styled.div<{
 	$left?: number;
@@ -59,10 +64,31 @@ const SendIconButton = styled.button`
 	cursor: pointer;
 `;
 
+const createInsertableCommentDocumentForDatabase = ({
+	user,
+	position,
+	content,
+	element,
+}: {
+	user: CommentInDatabase["user"];
+	content: CommentInDatabase["content"];
+	position: CommentInDatabase["position"];
+	element: CommentInDatabase["element"];
+}): CommentInDatabase => ({
+	user,
+	position,
+	element,
+	replies: [],
+	content,
+	createdAt: new Date(),
+	updatedAt: new Date(),
+});
+
 const CommentCreationBox = () => {
 	const commentCreationBoxRef = useRef<HTMLDivElement | null>(null);
 	const [currentComment, setCurrentComment] = useCurrentComment();
 	const [, setIsCommentingOn] = useIsCommentingOn();
+	const [user] = useAuth();
 
 	const onCommentTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		event.persist();
@@ -74,25 +100,24 @@ const CommentCreationBox = () => {
 		});
 	};
 
+	const hideCommentCreationBox = () => {
+		setCurrentComment(null);
+		setIsCommentingOn(true);
+	};
+
 	useEffect(() => {
 		// Close comment creation box on clicking outside
 		if (currentComment?.element?.selector) {
 			const onClick = (event: PointerEvent | MouseEvent) => {
 				if (!event.target || !commentCreationBoxRef.current) return;
-				if (!commentCreationBoxRef.current.contains(event.target as Node)) {
-					setCurrentComment(null);
-					setIsCommentingOn(true);
-				}
+				if (!commentCreationBoxRef.current.contains(event.target as Node))
+					hideCommentCreationBox();
 			};
 
 			window.addEventListener("click", onClick);
 			return () => window.removeEventListener("click", onClick);
 		}
 	}, [currentComment?.element?.selector]);
-
-	const onSubmit = (event: FormEvent) => {
-		event.preventDefault();
-	};
 
 	const left = useMemo(() => {
 		if (!currentComment) return;
@@ -131,6 +156,38 @@ const CommentCreationBox = () => {
 		currentComment?.position?.y,
 	]);
 
+	const [inserting, setInserting] = useState(false);
+	const onSubmit = useCallback(
+		async (event: FormEvent) => {
+			event.preventDefault();
+			if (
+				inserting ||
+				!user ||
+				!Object.keys(positionRelativeToClickedElement).length ||
+				!currentComment
+			)
+				return;
+
+			setInserting(true);
+			const commentInsertableInDatabase =
+				createInsertableCommentDocumentForDatabase({
+					user,
+					position: {
+						...currentComment?.position,
+						relative: positionRelativeToClickedElement,
+					},
+					element: currentComment.element,
+					content: currentComment.content,
+				});
+			const { error } = await createCommentForPage(commentInsertableInDatabase);
+			setInserting(false);
+
+			if (error) console.error(error);
+			else hideCommentCreationBox();
+		},
+		[inserting, currentComment, positionRelativeToClickedElement]
+	);
+
 	return currentComment ? (
 		<CommentCreationBoxDiv
 			ref={commentCreationBoxRef}
@@ -143,7 +200,7 @@ const CommentCreationBox = () => {
 					value={currentComment.content}
 					placeholder="Enter Your Comment here. PS: It can be multiple lines."
 				/>
-				<SendIconButton title="Send" type="submit">
+				<SendIconButton disabled={inserting} title="Send" type="submit">
 					<SendIcon />
 				</SendIconButton>
 			</form>

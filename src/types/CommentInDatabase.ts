@@ -13,7 +13,16 @@ export default interface CommentInDatabase {
 		selector: string;
 		attributeBasedSelector: string;
 	};
-	position: { x?: number; y?: number };
+	position: {
+		x?: number;
+		y?: number;
+		relative: {
+			relativeLeft?: number;
+			relativeTop?: number;
+			relativeLeftPercentage?: number;
+			relativeTopPercentage?: number;
+		};
+	};
 	content: string;
 	siteVersion?: string;
 	replies: CommentReply[];
