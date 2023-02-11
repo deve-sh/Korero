@@ -2,6 +2,7 @@ import type { Timestamp } from "firebase/firestore";
 
 export default interface CommentInDatabase {
 	id?: string;
+	url?: string;
 	user: {
 		email?: string;
 		displayName?: string;

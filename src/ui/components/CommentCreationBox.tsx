@@ -80,6 +80,7 @@ const createInsertableCommentDocumentForDatabase = ({
 	element,
 	replies: [],
 	content,
+	url: window.location.origin + window.location.pathname,
 	createdAt: new Date(),
 	updatedAt: new Date(),
 });
@@ -198,7 +199,7 @@ const CommentCreationBox = () => {
 				<CommentCreationTextarea
 					onChange={onCommentTextChange}
 					value={currentComment.content}
-					placeholder="Enter Your Comment here. PS: It can be multiple lines."
+					placeholder="Enter Your Comment here.\n\n"
 				/>
 				<SendIconButton disabled={inserting} title="Send" type="submit">
 					<SendIcon />
