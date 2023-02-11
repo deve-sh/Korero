@@ -21,7 +21,6 @@ const KoreroApp = () => {
 			(snapshot) => {
 				const processedCommentsDocs = processCommentDocs(snapshot);
 				setPageComments(processedCommentsDocs);
-				console.log(processedCommentsDocs);
 			},
 			console.error
 		);

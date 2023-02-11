@@ -8,6 +8,7 @@ import CommentInDatabase, {
 } from "../../../types/CommentInDatabase";
 
 import useAuth from "../../state/auth";
+import UserAvatar from "./UserAvatar";
 
 interface Props {
 	comment: CommentInDatabase | CommentReply;
@@ -18,6 +19,7 @@ interface Props {
 const CommentWrapper = styled.div`
 	padding: 1rem;
 	color: #707070;
+	min-width: 12.5rem;
 	&:not(:last-child) {
 		border-bottom: 0.0125rem solid #efefef;
 	}
@@ -25,12 +27,15 @@ const CommentWrapper = styled.div`
 
 const CommentContent = styled.div`
 	font-size: 0.925rem;
+	display: flex;
+	gap: 0.75rem;
 `;
 
 const CommentOptions = styled.div`
 	display: flex;
 	align-items: center;
 	margin-top: 0.5rem;
+	gap: 0.75rem;
 `;
 
 const CommentCreatedAt = styled.div`
@@ -51,7 +56,10 @@ const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 	return (
 		<>
 			<CommentWrapper>
-				<CommentContent>{comment.content}</CommentContent>
+				<CommentContent>
+					<UserAvatar user={comment.user} />
+					<div>{comment.content}</div>
+				</CommentContent>
 				<CommentOptions>
 					<CommentCreatedAt>
 						{(comment.createdAt as Date).toDateString().slice(4)}{" "}

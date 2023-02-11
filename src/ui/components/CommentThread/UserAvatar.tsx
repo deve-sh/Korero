@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import type User from "../../../types/User";
 
@@ -10,8 +10,8 @@ interface Props {
 
 const CommonStyling = css`
 	border-radius: 50%;
-	height: 2.5rem;
-	width: 2.5rem;
+	height: 2rem;
+	width: 2rem;
 `;
 
 const UserAvatarImg = styled.img`
@@ -22,12 +22,15 @@ const UserAvatarImg = styled.img`
 const UserAvatarDiv = styled.div`
 	padding: 0.5rem;
 	font-size: 1rem;
+	font-weight: 500;
 	color: #ffffff;
 	background: #e76a35;
 	${CommonStyling}
 `;
 
 const UserAvatar = ({ user }: Props) => {
+	const [failed, setFailed] = useState(false);
+
 	const userInitials = useMemo(() => {
 		if (!user.displayName) return "";
 		return user.displayName
@@ -36,8 +39,14 @@ const UserAvatar = ({ user }: Props) => {
 			.join("");
 	}, [user.displayName]);
 
-	return user.photoURL ? (
-		<UserAvatarImg src={user.photoURL} alt={user.displayName} loading="lazy" />
+	return user.photoURL || failed ? (
+		<UserAvatarImg
+			src={user.photoURL}
+			onError={() => setFailed(true)}
+			alt={user.displayName}
+			loading="lazy"
+			title={user.displayName}
+		/>
 	) : (
 		<UserAvatarDiv title={user.displayName || ""}>{userInitials}</UserAvatarDiv>
 	);

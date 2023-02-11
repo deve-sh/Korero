@@ -1,15 +1,10 @@
 import type { Timestamp } from "firebase/firestore";
+import type User from "./User";
 
 export default interface CommentInDatabase {
 	id?: string;
 	url?: string;
-	user: {
-		email?: string;
-		displayName?: string;
-		phoneNumber?: string;
-		photoURL?: string;
-		uid?: string;
-	};
+	user: User;
 	element: {
 		selector: string;
 		attributeBasedSelector: string;
@@ -33,13 +28,7 @@ export default interface CommentInDatabase {
 
 export interface CommentReply {
 	id?: string;
-	user: {
-		email?: string;
-		displayName?: string;
-		phoneNumber?: string;
-		photoURL?: string;
-		uid?: string;
-	};
+	user: User;
 	content: string;
 	createdAt: Date | Timestamp;
 	updatedAt: Date | Timestamp;

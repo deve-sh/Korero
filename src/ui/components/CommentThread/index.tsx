@@ -47,9 +47,14 @@ const MessageBubbleIconWrapper = styled.button`
 	outline: none;
 	border: none;
 	cursor: pointer;
+	display: none;
 
 	&:hover {
 		transform: scale(1.25);
+	}
+
+	&.visible {
+		display: block;
 	}
 `;
 
@@ -94,13 +99,14 @@ const CommentThread = ({ comment }: Props) => {
 		return () => window.removeEventListener("resize", onWindowResize);
 	}, []);
 
-	const commentThreadContentRef = useRef<HTMLDivElement | null>(null);
+	const commentThreadWrapperRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
 		if (isExpanded) {
 			const onClick = (event: PointerEvent | MouseEvent) => {
-				if (!commentThreadContentRef.current) return;
-				if (!commentThreadContentRef.current.contains(event.target as Node))
+				if (!commentThreadWrapperRef.current) return;
+				console.log(commentThreadWrapperRef.current, event.target);
+				if (!commentThreadWrapperRef.current.contains(event.target as Node))
 					setIsExpanded(false);
 			};
 
@@ -114,19 +120,18 @@ const CommentThread = ({ comment }: Props) => {
 			$left={leftAndTop.left}
 			$top={leftAndTop.top}
 			className="comment-thread-wrapper"
+			ref={commentThreadWrapperRef}
 		>
-			{!isExpanded && (
-				<MessageBubbleIconWrapper
-					className="comment-thread-message-bubble-icon-wrapper"
-					onClick={() => setIsExpanded(true)}
-				>
-					<MessageBubblesIcon height="1rem" width="1rem" />
-				</MessageBubbleIconWrapper>
-			)}
-			<CommentThreadContainer
-				ref={commentThreadContentRef}
-				className={isExpanded ? "visible" : ""}
+			<MessageBubbleIconWrapper
+				className={
+					"comment-thread-message-bubble-icon-wrapper" +
+					(!isExpanded ? " visible" : "")
+				}
+				onClick={() => setIsExpanded(true)}
 			>
+				<MessageBubblesIcon height="1rem" width="1rem" />
+			</MessageBubbleIconWrapper>
+			<CommentThreadContainer className={isExpanded ? "visible" : ""}>
 				<Comment comment={comment} />
 			</CommentThreadContainer>
 		</CompleteCommentThreadWrapper>
