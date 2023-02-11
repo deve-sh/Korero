@@ -49,7 +49,7 @@ chokidar.watch("./src").on("change", (path) => {
 		new Date().getTime() - lastBuildEventTriggeredAt > 2000
 	) {
 		lastBuildEventTriggeredAt = new Date().getTime();
-		execSync("npm run build", { stdio: "inherit" });
+		execSync("npm run build:dev", { stdio: "inherit" });
 	}
 });
 
@@ -63,7 +63,7 @@ try {
 writeFileSync("./dev/index.html", HTMLFileTemplate);
 
 console.log("Creating initial build for dev server...");
-execSync("npm run build", { stdio: "inherit" }); // Initial build
+execSync("npm run build:dev", { stdio: "inherit" }); // Initial build
 const liveServerParams = {
 	port: 5500,
 	host: "localhost",
