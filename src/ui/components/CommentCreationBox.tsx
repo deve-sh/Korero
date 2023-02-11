@@ -35,7 +35,7 @@ const CommentCreationBoxDiv = styled.div<{
 	}
 `;
 
-const CommentCreationTextarea = styled.textarea`
+export const CommentCreationTextarea = styled.textarea`
 	padding: 0.75rem;
 	border-radius: 0.25rem;
 	font-size: 0.875rem;
@@ -52,8 +52,9 @@ const CommentCreationTextarea = styled.textarea`
 	}
 `;
 
-const SendIconButton = styled.button`
+export const SendIconButton = styled.button`
 	width: 100%;
+	height: 100%;
 	padding: 0.35rem 0.75rem;
 	border: none;
 	outline: none;
@@ -200,6 +201,7 @@ const CommentCreationBox = () => {
 					onChange={onCommentTextChange}
 					value={currentComment.content}
 					placeholder="Enter Your Comment here."
+					required
 				/>
 				<SendIconButton disabled={inserting} title="Send" type="submit">
 					<SendIcon />

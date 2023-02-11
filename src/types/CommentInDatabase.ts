@@ -30,6 +30,6 @@ export interface CommentReply {
 	id?: string;
 	user: User;
 	content: string;
-	createdAt: Date | Timestamp;
-	updatedAt: Date | Timestamp;
+	createdAt?: Date | Timestamp;
+	updatedAt?: Date | Timestamp;
 }

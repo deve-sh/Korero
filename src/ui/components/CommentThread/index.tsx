@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 
 import MessageBubblesIcon from "../../../icons/MessageIcons";
+import SendIcon from "../../../icons/Send";
 
 import type CommentInDatabase from "../../../types/CommentInDatabase";
 import Comment from "./Comment";
+import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
+import { addReplyToComment } from "../../../API";
+import useAuth from "../../state/auth";
 
 interface Props {
 	comment: CommentInDatabase;
@@ -27,12 +31,15 @@ const CommentThreadContainer = styled.div`
 	border-radius: 0.25rem;
 	border: 0.0125rem solid #efefef;
 	box-shadow: 0px 8px 30px rgb(0 0 0 / 25%);
-	max-height: 300px;
-	overflow-y: auto;
 
 	&.visible {
 		display: block;
 	}
+`;
+
+const CommentsListContainer = styled.div`
+	max-height: 300px;
+	overflow-y: auto;
 `;
 
 const MessageBubbleIconWrapper = styled.button`
@@ -56,6 +63,21 @@ const MessageBubbleIconWrapper = styled.button`
 	&.visible {
 		display: block;
 	}
+`;
+
+const AddCommentReplyWrapper = styled.form`
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 0.75rem 0 0.75rem;
+`;
+
+const StyledCommentCreationTextarea = styled(CommentCreationTextarea)`
+	width: 90%;
+`;
+const StyledSendIconButton = styled(SendIconButton)`
+	height: 100%;
+	width: auto;
 `;
 
 const determineAndAdjustCommentThreadPosition = (
@@ -115,6 +137,25 @@ const CommentThread = ({ comment }: Props) => {
 		}
 	}, [isExpanded]);
 
+	const [user] = useAuth();
+	const [replyContent, setReplyContent] = useState("");
+	const onReplyTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+		event.persist();
+		setReplyContent(event.target.value);
+	};
+	const [insertingReply, setInsertingReply] = useState(false);
+	const createCommentReply = async (event: FormEvent) => {
+		event.preventDefault();
+		setInsertingReply(true);
+		if (!replyContent || !user) return;
+		const { error } = await addReplyToComment(comment.id as string, {
+			user,
+			content: replyContent,
+		});
+		if (!error) setReplyContent("");
+		setInsertingReply(false);
+	};
+
 	return (
 		<CompleteCommentThreadWrapper
 			$left={leftAndTop.left}
@@ -132,7 +173,24 @@ const CommentThread = ({ comment }: Props) => {
 				<MessageBubblesIcon height="1rem" width="1rem" />
 			</MessageBubbleIconWrapper>
 			<CommentThreadContainer className={isExpanded ? "visible" : ""}>
-				<Comment comment={comment} />
+				<CommentsListContainer>
+					<Comment comment={comment} />
+				</CommentsListContainer>
+				<AddCommentReplyWrapper onSubmit={createCommentReply}>
+					<StyledCommentCreationTextarea
+						onChange={onReplyTextChange}
+						value={replyContent}
+						placeholder="Enter Your Reply here"
+						required
+					/>
+					<StyledSendIconButton
+						disabled={insertingReply}
+						title="Send"
+						type="submit"
+					>
+						<SendIcon />
+					</StyledSendIconButton>
+				</AddCommentReplyWrapper>
 			</CommentThreadContainer>
 		</CompleteCommentThreadWrapper>
 	);

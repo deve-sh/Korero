@@ -20,9 +20,8 @@ const CommentWrapper = styled.div`
 	padding: 1rem;
 	color: #707070;
 	min-width: 12.5rem;
-	&:not(:last-child) {
-		border-bottom: 0.0125rem solid #efefef;
-	}
+	max-width: 15.5rem;
+	border-bottom: 0.0125rem solid #efefef;
 `;
 
 const CommentContent = styled.div`
