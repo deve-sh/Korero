@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 
 import MessageBubblesIcon from "../../../icons/MessageIcons";
 
 import type CommentInDatabase from "../../../types/CommentInDatabase";
+import Comment from "./Comment";
 
 interface Props {
 	comment: CommentInDatabase;
@@ -21,8 +22,13 @@ const CompleteCommentThreadWrapper = styled.div<{
 `;
 
 const CommentThreadContainer = styled.div`
-	padding: 0.75rem;
 	display: none;
+	background: #ffffff;
+	border-radius: 0.25rem;
+	border: 0.0125rem solid #efefef;
+	box-shadow: 0px 8px 30px rgb(0 0 0 / 25%);
+	max-height: 300px;
+	overflow-y: auto;
 
 	&.visible {
 		display: block;
@@ -88,9 +94,20 @@ const CommentThread = ({ comment }: Props) => {
 		return () => window.removeEventListener("resize", onWindowResize);
 	}, []);
 
+	const commentThreadContentRef = useRef<HTMLDivElement | null>(null);
+
 	useEffect(() => {
-		console.log(leftAndTop);
-	}, [leftAndTop]);
+		if (isExpanded) {
+			const onClick = (event: PointerEvent | MouseEvent) => {
+				if (!commentThreadContentRef.current) return;
+				if (!commentThreadContentRef.current.contains(event.target as Node))
+					setIsExpanded(false);
+			};
+
+			window.addEventListener("click", onClick);
+			return () => window.removeEventListener("click", onClick);
+		}
+	}, [isExpanded]);
 
 	return (
 		<CompleteCommentThreadWrapper
@@ -107,8 +124,11 @@ const CommentThread = ({ comment }: Props) => {
 				</MessageBubbleIconWrapper>
 			)}
 			<CommentThreadContainer
+				ref={commentThreadContentRef}
 				className={isExpanded ? "visible" : ""}
-			></CommentThreadContainer>
+			>
+				<Comment comment={comment} />
+			</CommentThreadContainer>
 		</CompleteCommentThreadWrapper>
 	);
 };
