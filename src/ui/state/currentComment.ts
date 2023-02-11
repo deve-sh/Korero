@@ -4,8 +4,10 @@ export interface CurrentComment {
 	element: {
 		attributeBasedSelector: string;
 		selector: string;
-		x?: string | number; // Offset percentages/numbers inside the target element.
-		y?: string | number;
+	};
+	position: {
+		x: number;
+		y: number;
 	};
 	content: string;
 	user: {

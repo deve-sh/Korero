@@ -10,9 +10,8 @@ export default interface CommentInDatabase {
 	element: {
 		selector: string;
 		attributeBasedSelector: string;
-		x?: string | number;
-		y?: string | number;
 	};
+	position: { x?: number; y?: number };
 	content: string;
 	siteVersion?: string;
 	replies: CommentInDatabase[];
