@@ -18,7 +18,6 @@ import GoogleIcon from "../../icons/Google";
 import TurnOnCommentingIcon from "../../icons/TurnOnCommenting";
 import TurnOffCommentingIcon from "../../icons/TurnOffCommenting";
 import LogoutIcon from "../../icons/Logout";
-import { removeCommentCursorFromBody } from "../../utils/modifyCommentCursor";
 
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
@@ -99,12 +98,18 @@ const RenderActionOptions = ({
 				event.preventDefault();
 				event.stopPropagation();
 
+				// Get element's unique identifiers and attributes
 				const elementIdentifiers =
 					getAllIdentifyingAttributesForElement(target);
-				setCurrentComment({ user, content: "", element: elementIdentifiers });
+				// Get clicked element's position and the clicked position + percentage
+				const { pageX, pageY } = event;
 
-				// Now that the user has selected an element to comment on, reset the cursor.
-				removeCommentCursorFromBody();
+				setCurrentComment({
+					user,
+					content: "",
+					element: elementIdentifiers,
+					position: { x: pageX, y: pageY },
+				});
 				setIsCommentingOn(false);
 			};
 
