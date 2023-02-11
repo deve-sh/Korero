@@ -12,6 +12,7 @@ import useCurrentComment from "../state/currentComment";
 import mountClickListenerForComment from "../../utils/mountClickListenerForComment";
 import unmountClickListenerForComment from "../../utils/unmountClickListenerForComments";
 import getAllIdentifyingAttributesForElement from "../../utils/getAllIdentifyingAttrsForElement";
+import isClickFromInsideACommentThread from "../../utils/isClickFromInsideACommentThread";
 
 import GitHubIcon from "../../icons/GitHub";
 import GoogleIcon from "../../icons/Google";
@@ -94,6 +95,8 @@ const RenderActionOptions = ({
 					centralActionHandleDivRef.current.contains(target)
 				)
 					return;
+
+				if (isClickFromInsideACommentThread(event)) return;
 
 				event.preventDefault();
 				event.stopPropagation();
