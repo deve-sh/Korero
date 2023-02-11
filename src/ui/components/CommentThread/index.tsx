@@ -38,7 +38,7 @@ const CommentThreadContainer = styled.div`
 `;
 
 const CommentsListContainer = styled.div`
-	max-height: 300px;
+	max-height: 250px;
 	overflow-y: auto;
 `;
 
