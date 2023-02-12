@@ -16,6 +16,7 @@ import Comment from "./Comment";
 import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
 import { addReplyToComment } from "../../../API/comments";
 import useAuth from "../../state/auth";
+import getAllRelevantDeviceInformation from "../../../utils/getAllRelevantDeviceInformation";
 
 interface Props {
 	comment: CommentInDatabase;
@@ -27,6 +28,7 @@ const CompleteCommentThreadWrapper = styled.div<{
 	className: string;
 }>`
 	position: fixed;
+	cursor: default;
 	${(props) => (props.$left ? "left: " + props.$left + ";" : "")}
 	${(props) => (props.$top ? "top: " + props.$top + ";" : "")}
     ${(props) => (!props.$top && !props.$left ? "display: none;" : "")}
@@ -173,6 +175,7 @@ const CommentThread = ({ comment }: Props) => {
 		const { error } = await addReplyToComment(comment.id as string, {
 			user,
 			content: replyContent,
+			device: getAllRelevantDeviceInformation(),
 		});
 		if (!error) setReplyContent("");
 		setInsertingReply(false);

@@ -14,6 +14,8 @@ import useAuth from "../state/auth";
 import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
 
+import getAllRelevantDeviceInformation from "../../utils/getAllRelevantDeviceInformation";
+
 import { createCommentForPage } from "../../API/comments";
 import type CommentInDatabase from "../../types/CommentInDatabase";
 
@@ -81,6 +83,7 @@ const createInsertableCommentDocumentForDatabase = ({
 	element,
 	replies: [],
 	content,
+	device: getAllRelevantDeviceInformation(),
 	url: window.location.origin + window.location.pathname,
 	resolved: false,
 	createdAt: new Date(),
