@@ -37,8 +37,8 @@ export const processCommentDocs = (
 			updatedAt: (docData.updatedAt as Timestamp).toDate(),
 			replies: docReplies.map((reply) => ({
 				...reply,
-				createdAt: (docData.createdAt as Timestamp).toDate(),
-				updatedAt: (docData.updatedAt as Timestamp).toDate(),
+				createdAt: (reply.createdAt as Timestamp).toDate(),
+				updatedAt: (reply.updatedAt as Timestamp).toDate(),
 			})),
 		};
 	});
