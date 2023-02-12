@@ -13,6 +13,8 @@ import {
 	processCommentDocs,
 } from "../../API/comments";
 import usePageCommentsStore from "../state/pageComments";
+import styled from "@emotion/styled";
+import AppContainerDiv from "./AppContainerDiv";
 
 const LoggedInAppFragments = () => {
 	const [user] = useAuth();
@@ -53,10 +55,10 @@ const KoreroApp = () => {
 	}, [user?.uid]);
 
 	return (
-		<>
+		<AppContainerDiv>
 			<CentralActionHandle />
 			<LoggedInAppFragments />
-		</>
+		</AppContainerDiv>
 	);
 };
 

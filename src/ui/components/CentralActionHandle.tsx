@@ -25,7 +25,7 @@ const CentralActionHandleDiv = styled.div`
 	min-width: 7rem;
 	cursor: pointer;
 	background: #343434;
-	padding: 1rem;
+	padding: 1rem 2rem;
 	color: #ffffff;
 	display: flex;
 	box-shadow: 0px 8px 30px rgb(0 0 0 / 25%);
@@ -48,6 +48,8 @@ const ActionButton = styled.button`
 	padding: 0;
 	margin: 0;
 `;
+
+const SignInLabel = styled.div``;
 
 const RenderLoginMethods = () => {
 	const { allowedSignInMethods = [] } = configStore.get();
@@ -140,7 +142,9 @@ const CentralActionHandle = () => {
 	return (
 		<CentralActionHandleDiv ref={centralActionHandleDivRef}>
 			{!user ? (
-				<RenderLoginMethods />
+				<>
+					<SignInLabel>Sign In To Comment</SignInLabel> | <RenderLoginMethods />
+				</>
 			) : (
 				<RenderActionOptions
 					centralActionHandleDivRef={centralActionHandleDivRef}
