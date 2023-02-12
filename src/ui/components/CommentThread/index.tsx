@@ -147,7 +147,6 @@ const CommentThread = ({ comment }: Props) => {
 		if (isExpanded) {
 			const onClick = (event: PointerEvent | MouseEvent) => {
 				if (!commentThreadWrapperRef.current) return;
-				console.log(commentThreadWrapperRef.current, event.target);
 				if (!commentThreadWrapperRef.current.contains(event.target as Node))
 					setIsExpanded(false);
 			};
@@ -194,7 +193,7 @@ const CommentThread = ({ comment }: Props) => {
 					comment.replies[i].user.displayName as string
 				);
 		}
-		return `${nCommentReplies > 0 ? "Comment" : "Comments"} from ${Array.from(
+		return `${nCommentReplies > 0 ? "Comments" : "Comment"} from ${Array.from(
 			setOfUserNamesWhoHaveCommented
 		).join(", ")}.`;
 	}, [comment.replies.length]);
