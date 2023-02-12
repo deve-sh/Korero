@@ -27,13 +27,14 @@ const CommentWrapper = styled.div`
 const CommentContent = styled.div`
 	font-size: 0.925rem;
 	display: flex;
+	align-items: center;
 	gap: 0.75rem;
 `;
 
 const CommentOptions = styled.div`
 	display: flex;
 	align-items: center;
-	margin-top: 0.5rem;
+	margin-top: 1rem;
 	gap: 0.75rem;
 `;
 
