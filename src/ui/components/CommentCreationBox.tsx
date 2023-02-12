@@ -82,6 +82,7 @@ const createInsertableCommentDocumentForDatabase = ({
 	replies: [],
 	content,
 	url: window.location.origin + window.location.pathname,
+	resolved: false,
 	createdAt: new Date(),
 	updatedAt: new Date(),
 });

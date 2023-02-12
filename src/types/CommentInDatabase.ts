@@ -5,6 +5,9 @@ export default interface CommentInDatabase {
 	id?: string;
 	url?: string;
 	user: User;
+	resolved?: boolean;
+	resolvedAt?: Date | Timestamp | null;
+	resolvedBy?: string; // Firebase Auth uuid
 	element: {
 		selector: string;
 		attributeBasedSelector: string;

@@ -30,6 +30,9 @@ export const processCommentDocs = (
 		return {
 			...docData,
 			id: doc.id,
+			resolvedAt: docData.resolvedAt
+				? (docData.resolvedAt as Timestamp).toDate()
+				: null,
 			createdAt: (docData.createdAt as Timestamp).toDate(),
 			updatedAt: (docData.updatedAt as Timestamp).toDate(),
 			replies: docReplies.map((reply) => ({
@@ -59,7 +62,7 @@ export const getCommentsForPageQueryRef = (filters?: Filters) => {
 	const queryArgs: [
 		query: Query<unknown>,
 		...queryConstraints: QueryConstraint[]
-	] = [collectionRef, where("url", "==", url)];
+	] = [collectionRef, where("url", "==", url), where("resolved", "==", false)];
 
 	if (currentSiteVersion)
 		queryArgs.push(where("siteVersion", "==", currentSiteVersion));
