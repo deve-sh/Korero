@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "@emotion/styled";
 import {
 	deleteComment,
@@ -9,6 +10,7 @@ import {
 import ResolveIcon from "../../../icons/Resolve";
 import UnresolveIcon from "../../../icons/Unresolve";
 import TrashIcon from "../../../icons/Trash";
+import ChevronUpIcon from "../../../icons/ChevronUp";
 
 import CommentInDatabase, {
 	type CommentReply,
@@ -31,17 +33,27 @@ const CommentWrapper = styled.div`
 	border-bottom: 0.0125rem solid #efefef;
 `;
 
-const CommentContent = styled.div`
+const CommentFullGrid = styled.div`
+	display: flex;
+	flex-flow: column;
+	gap: 1rem;
+`;
+
+const CommentTop = styled.div`
 	font-size: 0.925rem;
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
 `;
 
+const CommentPoster = styled.div`
+	font-weight: 600;
+	font-size: 0.875rem;
+`;
+
 const CommentExtraDetails = styled.div`
 	display: flex;
 	align-items: center;
-	margin-top: 1rem;
 	gap: 0.75rem;
 `;
 
@@ -56,7 +68,8 @@ const CommentDeleteButton = styled(TrashIcon)`
 `;
 
 const ResolutionButton = styled.button`
-	color: #212121;
+	background: #212121;
+	color: #ffffff;
 	outline: none;
 	border: none;
 	border-radius: 0.25rem;
@@ -69,10 +82,30 @@ const CommentContentDiv = styled.div``;
 
 const CommentOptions = styled.div`
 	flex: 1;
+	gap: 0.4rem;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
 `;
+
+const CommentDeviceDetailsExpandIcon = styled(ChevronUpIcon)`
+	cursor: pointer;
+	transform: rotate(180deg);
+
+	&.rotated {
+		transform: none;
+	}
+`;
+
+const CommentDeviceDetails = styled.div`
+	padding: 0.75rem;
+	font-size: 0.875rem;
+	border-radius: 0.25rem;
+	background: #707070;
+	color: #343434;
+`;
+
+const CommentDeviceDetailsFragment = styled.div``;
 
 const RenderResolutionButton = ({
 	comment,
@@ -101,36 +134,71 @@ const RenderResolutionButton = ({
 
 const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 	const [signedInUser] = useAuth();
+	const [deviceDetailsExpanded, setDeviceDetailsExpanded] = useState(false);
 
 	return (
 		<>
 			<CommentWrapper>
-				<CommentContent>
-					<UserAvatar user={comment.user} />
+				<CommentFullGrid>
+					<CommentTop>
+						<UserAvatar user={comment.user} />
+						<CommentPoster>
+							{comment.user.displayName || comment.user.email}
+						</CommentPoster>
+					</CommentTop>
 					<CommentContentDiv>{comment.content}</CommentContentDiv>
-				</CommentContent>
-				<CommentExtraDetails>
-					<CommentCreatedAt>
-						{(comment.createdAt as Date).toDateString().slice(4)}{" "}
-						{(comment.createdAt as Date).toTimeString().slice(0, 8)}
-					</CommentCreatedAt>
-					<CommentOptions>
-						{!isReply && (
-							<RenderResolutionButton comment={comment as CommentInDatabase} />
-						)}
-						{comment.user.uid === signedInUser?.uid && (
-							<CommentDeleteButton
-								height="0.875rem"
-								width="0.875rem"
-								onClick={() =>
-									isReply && parentCommentId && comment.id
-										? deleteReplyToComment(parentCommentId, comment.id)
-										: deleteComment(comment.id as string)
-								}
-							/>
-						)}
-					</CommentOptions>
-				</CommentExtraDetails>
+					<CommentExtraDetails>
+						<CommentCreatedAt>
+							{(comment.createdAt as Date).toDateString().slice(4)}{" "}
+							{(comment.createdAt as Date).toTimeString().slice(0, 8)}
+						</CommentCreatedAt>
+						<CommentOptions>
+							{comment.user.uid === signedInUser?.uid && (
+								<CommentDeleteButton
+									height="0.875rem"
+									width="0.875rem"
+									onClick={() =>
+										isReply && parentCommentId && comment.id
+											? deleteReplyToComment(parentCommentId, comment.id)
+											: deleteComment(comment.id as string)
+									}
+								/>
+							)}
+							{!!comment.device && (
+								<div
+									title={
+										deviceDetailsExpanded
+											? "View Device, Browser and OS Details"
+											: ""
+									}
+								>
+									<CommentDeviceDetailsExpandIcon
+										className={deviceDetailsExpanded ? "rotated" : ""}
+										onClick={() =>
+											setDeviceDetailsExpanded(!deviceDetailsExpanded)
+										}
+									/>
+								</div>
+							)}
+							{!isReply && (
+								<RenderResolutionButton
+									comment={comment as CommentInDatabase}
+								/>
+							)}
+						</CommentOptions>
+					</CommentExtraDetails>
+					{!!comment.device && deviceDetailsExpanded && (
+						<CommentDeviceDetails>
+							<CommentDeviceDetailsFragment>
+								Browser: {comment.device.browser.name}{" "}
+								{comment.device.browser.version}
+							</CommentDeviceDetailsFragment>
+							<CommentDeviceDetailsFragment>
+								OS: {comment.device.os.name} {comment.device.os.version}
+							</CommentDeviceDetailsFragment>
+						</CommentDeviceDetails>
+					)}
+				</CommentFullGrid>
 			</CommentWrapper>
 			{"replies" in comment && comment.id && comment.replies.length ? (
 				comment.replies.map((reply) => (
