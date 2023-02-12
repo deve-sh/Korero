@@ -101,8 +101,8 @@ const CommentDeviceDetails = styled.div`
 	padding: 0.75rem;
 	font-size: 0.875rem;
 	border-radius: 0.25rem;
-	background: #707070;
-	color: #343434;
+	background: #efefef;
+	color: #707070;
 `;
 
 const CommentDeviceDetailsFragment = styled.div``;
