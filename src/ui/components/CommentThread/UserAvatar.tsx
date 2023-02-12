@@ -16,6 +16,7 @@ const CommonStyling = css`
 
 const UserAvatarImg = styled.img`
 	object-fit: cover;
+	border: 0.0125rem solid #efefef;
 	${CommonStyling}
 `;
 
