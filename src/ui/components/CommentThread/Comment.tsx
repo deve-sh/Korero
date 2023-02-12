@@ -38,7 +38,7 @@ const CommentContent = styled.div`
 	gap: 0.75rem;
 `;
 
-const CommentOptions = styled.div`
+const CommentExtraDetails = styled.div`
 	display: flex;
 	align-items: center;
 	margin-top: 1rem;
@@ -50,26 +50,28 @@ const CommentCreatedAt = styled.div`
 	font-weight: 500;
 `;
 
-const CommentDeleteButtonWrapper = styled.div`
+const CommentDeleteButton = styled(TrashIcon)`
 	color: #d4224c;
 	cursor: pointer;
-	flex: 1;
-	text-align: right;
 `;
 
 const ResolutionButton = styled.button`
-	background: #212121;
+	color: #212121;
 	outline: none;
 	border: none;
-	color: #ffffff;
 	border-radius: 0.25rem;
 	padding: 0.5rem;
 	cursor: pointer;
 	justify-self: flex-end;
 `;
 
-const CommentContentDiv = styled.div`
-	min-width: 65%;
+const CommentContentDiv = styled.div``;
+
+const CommentOptions = styled.div`
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 `;
 
 const RenderResolutionButton = ({
@@ -106,18 +108,18 @@ const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 				<CommentContent>
 					<UserAvatar user={comment.user} />
 					<CommentContentDiv>{comment.content}</CommentContentDiv>
-					{!isReply && (
-						<RenderResolutionButton comment={comment as CommentInDatabase} />
-					)}
 				</CommentContent>
-				<CommentOptions>
+				<CommentExtraDetails>
 					<CommentCreatedAt>
 						{(comment.createdAt as Date).toDateString().slice(4)}{" "}
 						{(comment.createdAt as Date).toTimeString().slice(0, 8)}
 					</CommentCreatedAt>
-					{comment.user.uid === signedInUser?.uid && (
-						<CommentDeleteButtonWrapper>
-							<TrashIcon
+					<CommentOptions>
+						{!isReply && (
+							<RenderResolutionButton comment={comment as CommentInDatabase} />
+						)}
+						{comment.user.uid === signedInUser?.uid && (
+							<CommentDeleteButton
 								height="0.875rem"
 								width="0.875rem"
 								onClick={() =>
@@ -126,9 +128,9 @@ const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 										: deleteComment(comment.id as string)
 								}
 							/>
-						</CommentDeleteButtonWrapper>
-					)}
-				</CommentOptions>
+						)}
+					</CommentOptions>
+				</CommentExtraDetails>
 			</CommentWrapper>
 			{"replies" in comment && comment.id && comment.replies.length ? (
 				comment.replies.map((reply) => (

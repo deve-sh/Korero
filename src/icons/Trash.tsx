@@ -1,10 +1,11 @@
 import type IconArgs from "./IconArgs";
 
-const TrashIcon = ({ height, width, onClick }: IconArgs) => {
+const TrashIcon = ({ height, width, onClick, className }: IconArgs) => {
 	return (
 		<svg
 			stroke="currentColor"
 			fill="currentColor"
+			className={className}
 			onClick={onClick}
 			strokeWidth="0"
 			viewBox="0 0 448 512"
