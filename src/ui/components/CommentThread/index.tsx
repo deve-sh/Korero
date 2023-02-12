@@ -1,4 +1,11 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import {
+	ChangeEvent,
+	FormEvent,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import styled from "@emotion/styled";
 
 import MessageBubblesIcon from "../../../icons/MessageIcons";
@@ -44,6 +51,7 @@ const CommentsListContainer = styled.div`
 
 const MessageBubbleIconWrapper = styled.button`
 	border-radius: 50%;
+	position: relative;
 	height: 2rem;
 	width: 2rem;
 	transition: 200ms;
@@ -63,6 +71,18 @@ const MessageBubbleIconWrapper = styled.button`
 	&.visible {
 		display: block;
 	}
+`;
+
+const NCommentsNotificationBubble = styled.div`
+	border-radius: 50%;
+	background: #d4224c;
+	color: #ffffff;
+	position: absolute;
+	top: -0.35rem;
+	right: -0.35rem;
+	padding: 0.25rem;
+	font-size: 0.5rem;
+	width: 0.625rem;
 `;
 
 const AddCommentReplyWrapper = styled.form`
@@ -156,6 +176,29 @@ const CommentThread = ({ comment }: Props) => {
 		setInsertingReply(false);
 	};
 
+	const nCommentsLabel = useMemo(() => {
+		const nComments = 1 + comment.replies.length;
+		if (nComments > 9) return "9+";
+		if (nComments > 1) return nComments;
+		return "";
+	}, [comment.replies.length]);
+
+	const commentIconTitle = useMemo(() => {
+		const setOfUserNamesWhoHaveCommented = new Set(
+			comment.user.displayName ? [comment.user.displayName] : []
+		);
+		const nCommentReplies = comment.replies.length;
+		for (let i = 0; i < Math.min(nCommentReplies, 10); i++) {
+			if (comment.replies[i].user.displayName)
+				setOfUserNamesWhoHaveCommented.add(
+					comment.replies[i].user.displayName as string
+				);
+		}
+		return `${nCommentReplies > 0 ? "Comment" : "Comments"} from ${Array.from(
+			setOfUserNamesWhoHaveCommented
+		).join(", ")}.`;
+	}, [comment.replies.length]);
+
 	return (
 		<CompleteCommentThreadWrapper
 			$left={leftAndTop.left}
@@ -164,6 +207,7 @@ const CommentThread = ({ comment }: Props) => {
 			ref={commentThreadWrapperRef}
 		>
 			<MessageBubbleIconWrapper
+				title={commentIconTitle}
 				className={
 					"comment-thread-message-bubble-icon-wrapper" +
 					(!isExpanded ? " visible" : "")
@@ -171,6 +215,11 @@ const CommentThread = ({ comment }: Props) => {
 				onClick={() => setIsExpanded(true)}
 			>
 				<MessageBubblesIcon height="1rem" width="1rem" />
+				{nCommentsLabel && (
+					<NCommentsNotificationBubble>
+						{nCommentsLabel}
+					</NCommentsNotificationBubble>
+				)}
 			</MessageBubbleIconWrapper>
 			<CommentThreadContainer className={isExpanded ? "visible" : ""}>
 				<CommentsListContainer>
