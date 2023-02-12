@@ -1,5 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 import type User from "./User";
+import type RelativeDeviceInfo from "./RelevantDeviceInfo";
 
 export default interface CommentInDatabase {
 	id?: string;
@@ -11,6 +12,7 @@ export default interface CommentInDatabase {
 		selector: string;
 		attributeBasedSelector: string;
 	};
+	device?: RelativeDeviceInfo;
 	position: {
 		x?: number;
 		y?: number;
@@ -32,6 +34,7 @@ export interface CommentReply {
 	id?: string;
 	user: User;
 	content: string;
+	device?: RelativeDeviceInfo;
 	createdAt?: Date | Timestamp;
 	updatedAt?: Date | Timestamp;
 }

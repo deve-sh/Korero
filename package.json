@@ -19,6 +19,7 @@
 	"devDependencies": {
 		"@types/react": "^18.0.27",
 		"@types/react-dom": "^18.0.10",
+		"@types/ua-parser-js": "^0.7.36",
 		"chokidar": "^3.5.3",
 		"live-server": "^1.2.2",
 		"open": "^8.4.1",
@@ -32,6 +33,7 @@
 		"firebase": "^9.16.0",
 		"jotai": "^2.0.0",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
+		"react-dom": "^18.2.0",
+		"ua-parser-js": "^1.0.33"
 	}
 }
