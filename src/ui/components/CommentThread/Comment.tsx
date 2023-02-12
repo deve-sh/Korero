@@ -1,6 +1,13 @@
 import styled from "@emotion/styled";
-import { deleteComment, deleteReplyToComment } from "../../../API/comments";
+import {
+	deleteComment,
+	deleteReplyToComment,
+	markCommentAsResolved,
+	unresolveComment,
+} from "../../../API/comments";
 
+import ResolveIcon from "../../../icons/Resolve";
+import UnresolveIcon from "../../../icons/Unresolve";
 import TrashIcon from "../../../icons/Trash";
 
 import CommentInDatabase, {
@@ -39,7 +46,7 @@ const CommentOptions = styled.div`
 `;
 
 const CommentCreatedAt = styled.div`
-	font-size: 0.7rem;
+	font-size: 0.625rem;
 	font-weight: 500;
 `;
 
@@ -50,6 +57,46 @@ const CommentDeleteButtonWrapper = styled.div`
 	text-align: right;
 `;
 
+const ResolutionButton = styled.button`
+	background: #212121;
+	outline: none;
+	border: none;
+	color: #ffffff;
+	border-radius: 0.25rem;
+	padding: 0.5rem;
+	cursor: pointer;
+	justify-self: flex-end;
+`;
+
+const CommentContentDiv = styled.div`
+	min-width: 65%;
+`;
+
+const RenderResolutionButton = ({
+	comment,
+}: {
+	comment: CommentInDatabase;
+}) => {
+	if (!comment || !comment.id) return <></>;
+
+	return (
+		<ResolutionButton
+			onClick={() =>
+				!comment.resolved
+					? markCommentAsResolved(comment.id as string)
+					: unresolveComment(comment.id as string)
+			}
+			title={!comment.resolved ? "Mark as Resolved" : "Unresolve"}
+		>
+			{comment.resolved ? (
+				<UnresolveIcon height="1rem" width="1rem" />
+			) : (
+				<ResolveIcon height="1rem" width="1rem" />
+			)}
+		</ResolutionButton>
+	);
+};
+
 const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 	const [signedInUser] = useAuth();
 
@@ -58,7 +105,10 @@ const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 			<CommentWrapper>
 				<CommentContent>
 					<UserAvatar user={comment.user} />
-					<div>{comment.content}</div>
+					<CommentContentDiv>{comment.content}</CommentContentDiv>
+					{!isReply && (
+						<RenderResolutionButton comment={comment as CommentInDatabase} />
+					)}
 				</CommentContent>
 				<CommentOptions>
 					<CommentCreatedAt>

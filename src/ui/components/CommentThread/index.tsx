@@ -8,7 +8,7 @@ import {
 } from "react";
 import styled from "@emotion/styled";
 
-import MessageBubblesIcon from "../../../icons/MessageIcons";
+import MessageBubblesIcon from "../../../icons/MessageBubbles";
 import SendIcon from "../../../icons/Send";
 
 import type CommentInDatabase from "../../../types/CommentInDatabase";
@@ -46,16 +46,16 @@ const CommentThreadContainer = styled.div`
 
 const CommentsListContainer = styled.div`
 	max-height: 250px;
+	border-bottom: 0.0125rem solid #efefef;
 	overflow-y: auto;
 `;
 
-const MessageBubbleIconWrapper = styled.button`
+const MessageBubbleIconWrapper = styled.button<{ $resolved: boolean }>`
 	border-radius: 50%;
 	position: relative;
 	height: 2rem;
 	width: 2rem;
 	transition: 200ms;
-	background: #37393a;
 	color: #ffffff;
 	display: grid;
 	place-items: center;
@@ -63,6 +63,9 @@ const MessageBubbleIconWrapper = styled.button`
 	border: none;
 	cursor: pointer;
 	display: none;
+
+	${(props) =>
+		props.$resolved ? "background: #068a42;" : "background: #343434;"}
 
 	&:hover {
 		transform: scale(1.25);
@@ -207,6 +210,7 @@ const CommentThread = ({ comment }: Props) => {
 		>
 			<MessageBubbleIconWrapper
 				title={commentIconTitle}
+				$resolved={comment.resolved || false}
 				className={
 					"comment-thread-message-bubble-icon-wrapper" +
 					(!isExpanded ? " visible" : "")
