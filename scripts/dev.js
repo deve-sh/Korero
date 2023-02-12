@@ -1,5 +1,5 @@
 const liveServer = require("live-server");
-const { execSync } = require("child_process");
+const { execSync, exec } = require("child_process");
 const chokidar = require("chokidar");
 const { mkdirSync, writeFileSync } = require("fs");
 const open = require("open");
@@ -49,7 +49,9 @@ chokidar.watch("./src").on("change", (path) => {
 		new Date().getTime() - lastBuildEventTriggeredAt > 2000
 	) {
 		lastBuildEventTriggeredAt = new Date().getTime();
-		execSync("npm run build:dev", { stdio: "inherit" });
+		const buildProcess = exec("npm run build:dev");
+		buildProcess.stdout.on("data", console.log);
+		buildProcess.stderr.on("data", console.error);
 	}
 });
 
