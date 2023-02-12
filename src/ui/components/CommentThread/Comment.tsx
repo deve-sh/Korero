@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { deleteComment, deleteReplyToComment } from "../../../API";
+import { deleteComment, deleteReplyToComment } from "../../../API/comments";
 
 import TrashIcon from "../../../icons/Trash";
 

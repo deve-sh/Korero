@@ -14,7 +14,7 @@ import useAuth from "../state/auth";
 import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
 
-import { createCommentForPage } from "../../API";
+import { createCommentForPage } from "../../API/comments";
 import type CommentInDatabase from "../../types/CommentInDatabase";
 
 const CommentCreationBoxDiv = styled.div<{

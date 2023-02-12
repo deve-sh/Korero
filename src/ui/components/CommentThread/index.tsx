@@ -7,7 +7,7 @@ import SendIcon from "../../../icons/Send";
 import type CommentInDatabase from "../../../types/CommentInDatabase";
 import Comment from "./Comment";
 import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
-import { addReplyToComment } from "../../../API";
+import { addReplyToComment } from "../../../API/comments";
 import useAuth from "../../state/auth";
 
 interface Props {

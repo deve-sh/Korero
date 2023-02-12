@@ -7,7 +7,10 @@ import CentralActionHandle from "../components/CentralActionHandle";
 import CommentCreationBox from "../components/CommentCreationBox";
 import CommentThread from "../components/CommentThread";
 
-import { getCommentsForPageQueryRef, processCommentDocs } from "../../API";
+import {
+	getCommentsForPageQueryRef,
+	processCommentDocs,
+} from "../../API/comments";
 import usePageCommentsStore from "../state/pageComments";
 
 const KoreroApp = () => {
