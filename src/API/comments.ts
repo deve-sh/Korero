@@ -62,7 +62,7 @@ export const getCommentsForPageQueryRef = (filters?: Filters) => {
 	const queryArgs: [
 		query: Query<unknown>,
 		...queryConstraints: QueryConstraint[]
-	] = [collectionRef, where("url", "==", url), where("resolved", "==", false)];
+	] = [collectionRef, where("url", "==", url)];
 
 	if (currentSiteVersion)
 		queryArgs.push(where("siteVersion", "==", currentSiteVersion));
@@ -160,6 +160,34 @@ export const deleteReplyToComment = async (
 			};
 			transaction.update(commentDocRef, updates);
 		});
+		return { data: commentDocRef };
+	} catch (error: Error | unknown) {
+		return { error };
+	}
+};
+
+export const markCommentAsResolved = async (commentId: string) => {
+	try {
+		const collectionRef = collection(
+			getFirestore(),
+			COMMENTS_FIRESTORE_COLLECTION_NAME
+		);
+		const commentDocRef = doc(collectionRef, commentId);
+		await updateDoc(commentDocRef, { resolved: true, resolvedAt: new Date() });
+		return { data: commentDocRef };
+	} catch (error: Error | unknown) {
+		return { error };
+	}
+};
+
+export const unresolveComment = async (commentId: string) => {
+	try {
+		const collectionRef = collection(
+			getFirestore(),
+			COMMENTS_FIRESTORE_COLLECTION_NAME
+		);
+		const commentDocRef = doc(collectionRef, commentId);
+		await updateDoc(commentDocRef, { resolved: false, resolvedAt: null });
 		return { data: commentDocRef };
 	} catch (error: Error | unknown) {
 		return { error };
