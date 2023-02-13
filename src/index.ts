@@ -14,7 +14,7 @@ import initializeFirebase from "./firebase/app";
 import configStore from "./config";
 
 import { mountUI, unmountUI } from "./ui";
-import mountLocationChangeInitializers from "./utils/mountLocationChangeInitializers";
+import koreroInstanceStore from "./config/koreroInstanceStore";
 
 /**
  * Usage:
@@ -40,8 +40,6 @@ class Korero {
 		)
 			throw new Error(INVALID_HOST);
 
-		configStore.set(options);
-
 		this.firebaseCredentials = firebaseCredentials;
 		this.apiKey = apiKey || "";
 		if (firebaseCredentials) {
@@ -49,7 +47,8 @@ class Korero {
 			initializeFirebase(this.firebaseCredentials);
 		}
 
-		mountLocationChangeInitializers(this);
+		configStore.set(options);
+		koreroInstanceStore.set(this);
 	}
 
 	initialize() {
