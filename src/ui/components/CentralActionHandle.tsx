@@ -8,6 +8,7 @@ import configStore from "../../config";
 import useAuth from "../state/auth";
 import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
+import useAppHidden from "../state/appHidden";
 
 import mountClickListenerForComment from "../../utils/mountClickListenerForComment";
 import unmountClickListenerForComment from "../../utils/unmountClickListenerForComments";
@@ -19,6 +20,7 @@ import GoogleIcon from "../../icons/Google";
 import TurnOnCommentingIcon from "../../icons/TurnOnCommenting";
 import TurnOffCommentingIcon from "../../icons/TurnOffCommenting";
 import LogoutIcon from "../../icons/Logout";
+import HideIcon from "../../icons/Hide";
 
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
@@ -138,6 +140,7 @@ const RenderActionOptions = ({
 const CentralActionHandle = () => {
 	const centralActionHandleDivRef = useRef<HTMLDivElement | null>(null);
 	const [user] = useAuth();
+	const [, setAppHidden] = useAppHidden();
 
 	return (
 		<CentralActionHandleDiv ref={centralActionHandleDivRef}>
@@ -150,6 +153,9 @@ const CentralActionHandle = () => {
 					centralActionHandleDivRef={centralActionHandleDivRef}
 				/>
 			)}
+			<ActionButton onClick={() => setAppHidden(true)} title="Hide Korero">
+				<HideIcon />
+			</ActionButton>
 		</CentralActionHandleDiv>
 	);
 };

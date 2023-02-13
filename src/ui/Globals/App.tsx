@@ -3,6 +3,7 @@ import { onSnapshot } from "firebase/firestore";
 
 import useAuth from "../state/auth";
 import useOnAuthStateChange from "./useOnAuthStateChange";
+import useAppHidden from "../state/appHidden";
 
 import CentralActionHandle from "../components/CentralActionHandle";
 import CommentCreationBox from "../components/CommentCreationBox";
@@ -35,11 +36,14 @@ const LoggedInAppFragments = () => {
 const KoreroApp = () => {
 	useOnAuthStateChange();
 
+	// Ability to the user to hide the entire App
+	const [appHidden] = useAppHidden();
+
 	const [user] = useAuth();
 	const [, setPageComments] = usePageCommentsStore();
 
 	useEffect(() => {
-		if (user?.uid) {
+		if (user?.uid && !appHidden) {
 			const unsubscribeToRealtimePageComments = onSnapshot(
 				getCommentsForPageQueryRef(),
 				(snapshot) => {
@@ -56,8 +60,9 @@ const KoreroApp = () => {
 				setPageComments([]);
 			};
 		}
-	}, [user?.uid]);
+	}, [user?.uid, appHidden]);
 
+	if (appHidden) return <></>;
 	return (
 		<AppContainerDiv>
 			<CentralActionHandle />
