@@ -5,7 +5,7 @@ const LogoutIcon = ({ height, width }: IconArgs) => {
 		<svg
 			stroke="currentColor"
 			fill="currentColor"
-			stroke-width="0"
+			strokeWidth="0"
 			viewBox="0 0 512 512"
 			height={height || 24}
 			width={width || 24}

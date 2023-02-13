@@ -202,7 +202,12 @@ const Comment = ({ comment, parentCommentId, isReply }: Props) => {
 			</CommentWrapper>
 			{"replies" in comment && comment.id && comment.replies.length ? (
 				comment.replies.map((reply) => (
-					<Comment comment={reply} isReply parentCommentId={comment.id} />
+					<Comment
+						comment={reply}
+						isReply
+						parentCommentId={comment.id}
+						key={reply.id}
+					/>
 				))
 			) : (
 				<></>
