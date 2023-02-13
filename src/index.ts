@@ -14,6 +14,7 @@ import initializeFirebase from "./firebase/app";
 import configStore from "./config";
 
 import { mountUI, unmountUI } from "./ui";
+import mountLocationChangeInitializers from "./utils/mountLocationChangeInitializers";
 
 /**
  * Usage:
@@ -47,6 +48,8 @@ class Korero {
 			this.mode = "firebase";
 			initializeFirebase(this.firebaseCredentials);
 		}
+
+		mountLocationChangeInitializers(this);
 	}
 
 	initialize() {
