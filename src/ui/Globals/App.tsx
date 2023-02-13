@@ -8,6 +8,8 @@ import CentralActionHandle from "../components/CentralActionHandle";
 import CommentCreationBox from "../components/CommentCreationBox";
 import CommentThread from "../components/CommentThread";
 
+import mountLocationChangeInitializers from "../../utils/locationChangeBasedInitializers";
+
 import {
 	getCommentsForPageQueryRef,
 	processCommentDocs,
@@ -46,7 +48,10 @@ const KoreroApp = () => {
 				},
 				console.error
 			);
+			const unmountLocationChangeInitializers =
+				mountLocationChangeInitializers();
 			return () => {
+				unmountLocationChangeInitializers();
 				unsubscribeToRealtimePageComments();
 				setPageComments([]);
 			};
