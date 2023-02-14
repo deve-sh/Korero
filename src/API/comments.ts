@@ -13,6 +13,7 @@ import {
 	updateDoc,
 	arrayUnion,
 	runTransaction,
+	serverTimestamp,
 } from "firebase/firestore";
 import getFirestore from "../firebase/firestore";
 
@@ -156,7 +157,7 @@ export const deleteReplyToComment = async (
 				replies: (commentDoc.data() as CommentInDatabase).replies.filter(
 					(reply) => reply.id !== replyId
 				),
-				updatedAt: new Date(),
+				updatedAt: serverTimestamp(),
 			};
 			transaction.update(commentDocRef, updates);
 		});
@@ -173,7 +174,10 @@ export const markCommentAsResolved = async (commentId: string) => {
 			COMMENTS_FIRESTORE_COLLECTION_NAME
 		);
 		const commentDocRef = doc(collectionRef, commentId);
-		await updateDoc(commentDocRef, { resolved: true, resolvedAt: new Date() });
+		await updateDoc(commentDocRef, {
+			resolved: true,
+			resolvedAt: serverTimestamp(),
+		});
 		return { data: commentDocRef };
 	} catch (error: Error | unknown) {
 		return { error };

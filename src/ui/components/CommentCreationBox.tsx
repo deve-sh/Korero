@@ -7,7 +7,9 @@ import {
 	useCallback,
 	useState,
 } from "react";
+import { serverTimestamp, type Timestamp } from "firebase/firestore";
 import styled from "@emotion/styled";
+
 import SendIcon from "../../icons/Send";
 
 import useAuth from "../state/auth";
@@ -86,8 +88,8 @@ const createInsertableCommentDocumentForDatabase = ({
 	device: getAllRelevantDeviceInformation(),
 	url: window.location.origin + window.location.pathname,
 	resolved: false,
-	createdAt: new Date(),
-	updatedAt: new Date(),
+	createdAt: serverTimestamp() as Timestamp,
+	updatedAt: serverTimestamp() as Timestamp,
 });
 
 const CommentCreationBox = () => {
