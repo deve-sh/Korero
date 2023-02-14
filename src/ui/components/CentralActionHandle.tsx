@@ -22,6 +22,8 @@ import TurnOffCommentingIcon from "../../icons/TurnOffCommenting";
 import LogoutIcon from "../../icons/Logout";
 import HideIcon from "../../icons/Hide";
 
+import PresenceIndicatorThread from "./PresenceIndicatorThread";
+
 const CentralActionHandleDiv = styled.div`
 	border-radius: 2.5rem;
 	min-width: 7rem;
@@ -149,9 +151,12 @@ const CentralActionHandle = () => {
 					<SignInLabel>Sign In To Comment</SignInLabel> | <RenderLoginMethods />
 				</>
 			) : (
-				<RenderActionOptions
-					centralActionHandleDivRef={centralActionHandleDivRef}
-				/>
+				<>
+					<PresenceIndicatorThread />
+					<RenderActionOptions
+						centralActionHandleDivRef={centralActionHandleDivRef}
+					/>
+				</>
 			)}
 			<ActionButton onClick={() => setAppHidden(true)} title="Hide Korero">
 				<HideIcon />
