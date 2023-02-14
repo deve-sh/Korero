@@ -12,7 +12,7 @@ service cloud.firestore {
       allow read, create, update, delete: if isSignedIn();
     }
 
-    match /korero-users-active/{url} {
+    match /korero-presence/{url} {
       allow read, create, update: if isSignedIn();
     }
   }
