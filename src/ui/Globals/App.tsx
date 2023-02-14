@@ -16,11 +16,15 @@ import {
 	processCommentDocs,
 } from "../../API/comments";
 import usePageCommentsStore from "../state/pageComments";
+import useMarkPresence from "./useMarkPresence";
+
 import AppContainerDiv from "./AppContainerDiv";
 
 const LoggedInAppFragments = () => {
 	const [user] = useAuth();
 	const [pageComments] = usePageCommentsStore();
+
+	useMarkPresence();
 
 	if (!user) return <></>;
 	return (
