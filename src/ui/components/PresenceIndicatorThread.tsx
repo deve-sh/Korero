@@ -19,9 +19,9 @@ const PresenceIndicatorThread = () => {
 	useEffect(() => {
 		const unsubscribeToPresence = onSnapshot(
 			getPresenceStatusesForPageDocRef(),
-			(presenseDocsSnapshot) => {
+			(presenseDocSnapshot) => {
 				const presentUsersDoc =
-					processPresenceStatusDocumentsSnapshot(presenseDocsSnapshot);
+					processPresenceStatusDocumentsSnapshot(presenseDocSnapshot);
 				if (!presentUsersDoc) return;
 
 				setPresentUsers(Object.values(presentUsersDoc));
@@ -36,7 +36,11 @@ const PresenceIndicatorThread = () => {
 		<>
 			<UserAvatar user={user} />
 			{presentUsers.map((activeOrIdleUser) => {
-				if (activeOrIdleUser.user.uid === user.uid) return <></>;
+				if (
+					activeOrIdleUser.user.uid === user.uid ||
+					activeOrIdleUser.status === "idle"
+				)
+					return <></>;
 				return (
 					<UserAvatar
 						key={activeOrIdleUser.user.uid}
