@@ -11,5 +11,9 @@ service cloud.firestore {
     match /korero-comments/{commentId} {
       allow read, create, update, delete: if isSignedIn();
     }
+
+    match /korero-users-active/{url} {
+      allow read, create, update: if isSignedIn();
+    }
   }
 }
