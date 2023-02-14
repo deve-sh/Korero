@@ -17,21 +17,24 @@ import type {
 	PresenceStatusDocumentInFirestore,
 } from "../types/PresenceStatus";
 import type User from "../types/User";
+import tabUniqueId from "../ui/Globals/generateUniqueIdForTab";
 
 export const processPresenceStatusDocumentsSnapshot = (
 	querySnapshot: DocumentSnapshot<PresenceStatusDocumentInFirestore>
-): PresenceStatusDocumentInFirestore | null => {
+): PresenceStatusDocumentInFirestore["uid"][] | null => {
 	if (!querySnapshot.exists()) return null;
 
-	const docData: PresenceStatusDocumentInFirestore = querySnapshot.data();
-	const uids = Object.keys(docData);
-	for (const uid of uids) {
-		docData[uid] = {
-			...docData[uid],
-			lastUpdatedAt: (docData[uid].lastUpdatedAt as Timestamp).toDate(),
-		};
+	const userIdsAlreadyMapped = new Set();
+	const usersByPresence = [];
+
+	const presenceValues = Object.values(querySnapshot.data());
+
+	for (let presence of presenceValues) {
+		if (userIdsAlreadyMapped.has(presence.user.uid)) continue;
+		usersByPresence.push(presence);
 	}
-	return docData as PresenceStatusDocumentInFirestore;
+
+	return usersByPresence;
 };
 
 export const getPresenceStatusesForPageDocRef = () => {
@@ -56,7 +59,11 @@ export const setPresenceStatus = async (user: User, status: PresenceStatus) => {
 
 		const docRef = doc(collectionRef, urlHash);
 		const updates = {
-			[user.uid]: { status, lastUpdatedAt: serverTimestamp(), user },
+			[user.uid + "-" + tabUniqueId]: {
+				status,
+				lastUpdatedAt: serverTimestamp(),
+				user,
+			},
 		};
 
 		await setDoc(docRef, updates, { merge: true });
@@ -75,7 +82,7 @@ export const removePresenceStatus = async (uid: string) => {
 			getFirestore(),
 			PRESENCE_FIRESTORE_COLLECTION_NAME
 		);
-		const updates = { [uid]: deleteField() };
+		const updates = { [uid + "-" + tabUniqueId]: deleteField() };
 
 		const docRef = doc(collectionRef, urlHash);
 		await setDoc(docRef, updates, { merge: true });

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { onSnapshot } from "firebase/firestore";
 
 import { type PresenceStatusDocumentInFirestore } from "../../types/PresenceStatus";
@@ -24,7 +24,7 @@ const PresenceIndicatorThread = () => {
 					processPresenceStatusDocumentsSnapshot(presenseDocSnapshot);
 				if (!presentUsersDoc) return;
 
-				setPresentUsers(Object.values(presentUsersDoc));
+				setPresentUsers(presentUsersDoc);
 			}
 		);
 
@@ -40,7 +40,7 @@ const PresenceIndicatorThread = () => {
 					activeOrIdleUser.user.uid === user.uid ||
 					activeOrIdleUser.status === "idle"
 				)
-					return <></>;
+					return null;
 				return (
 					<UserAvatar
 						key={activeOrIdleUser.user.uid}

@@ -23,6 +23,7 @@ const useMarkPresence = () => {
 			window.addEventListener("beforeunload", onTabClose);
 
 			return () => {
+				removePresenceStatus(user.uid);
 				window.removeEventListener("beforeunload", onTabClose);
 				window.removeEventListener("focus", onWindowFocus);
 				document.removeEventListener("visibilitychange", onVisibilityChange);
