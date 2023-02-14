@@ -6,9 +6,12 @@ import {
 	query,
 	setDoc,
 	where,
+	serverTimestamp,
 	type Timestamp,
 	type QuerySnapshot,
+	deleteField,
 } from "firebase/firestore";
+import md5 from "md5";
 
 import { PRESENCE_FIRESTORE_COLLECTION_NAME } from "../constants/firebase";
 import getFirestore from "../firebase/firestore";
@@ -18,9 +21,6 @@ import type {
 	PresenceStatusDocumentInFirestore,
 } from "../types/PresenceStatus";
 import type User from "../types/User";
-
-// No need to store more than 10 people's activity stats as no one would be seeing more than that.
-const MAX_USERS_ACTIVITY_STATS_TO_STORE = 10;
 
 export const processPresenceStatusDocumentsSnapshot = (
 	querySnapshot: QuerySnapshot<PresenceStatusDocumentInFirestore>
@@ -53,32 +53,37 @@ export const getPresenceStatusesForPageDocRef = () => {
 export const setPresenceStatus = async (user: User, status: PresenceStatus) => {
 	try {
 		const url = window.location.origin + window.location.pathname;
+		const urlHash = md5(url);
 		const collectionRef = collection(
 			getFirestore(),
 			PRESENCE_FIRESTORE_COLLECTION_NAME
 		);
-		const queryRef = query(collectionRef, where("url", "==", url), limit(1));
-		const presenceDoc = (await getDocs(queryRef)).docs[0];
 
-		let docRef;
-		const updates = { [user.uid]: { status, lastUpdatedAt: new Date(), user } };
-
-		if (!presenceDoc) {
-			// Create a new one first
-			docRef = doc(collectionRef);
-		} else {
-			// Set the document with data
-			docRef = presenceDoc.ref;
-
-			if (
-				Object.keys(presenceDoc.data()).length >
-				MAX_USERS_ACTIVITY_STATS_TO_STORE
-			)
-				return {};
-		}
+		const docRef = doc(collectionRef, urlHash);
+		const updates = {
+			[user.uid]: { status, lastUpdatedAt: serverTimestamp(), user },
+		};
 
 		await setDoc(docRef, updates, { merge: true });
+		return {};
+	} catch (error) {
+		return { error };
+	}
+};
 
+export const removePresenceStatus = async (uid: string) => {
+	try {
+		const url = window.location.origin + window.location.pathname;
+		const urlHash = md5(url);
+
+		const collectionRef = collection(
+			getFirestore(),
+			PRESENCE_FIRESTORE_COLLECTION_NAME
+		);
+		const updates = { [uid]: deleteField() };
+
+		const docRef = doc(collectionRef, urlHash);
+		await setDoc(docRef, updates, { merge: true });
 		return {};
 	} catch (error) {
 		return { error };
