@@ -1,14 +1,10 @@
 import {
 	collection,
 	doc,
-	getDocs,
-	limit,
-	query,
 	setDoc,
-	where,
 	serverTimestamp,
 	type Timestamp,
-	type QuerySnapshot,
+	type DocumentSnapshot,
 	deleteField,
 } from "firebase/firestore";
 import md5 from "md5";
@@ -23,12 +19,11 @@ import type {
 import type User from "../types/User";
 
 export const processPresenceStatusDocumentsSnapshot = (
-	querySnapshot: QuerySnapshot<PresenceStatusDocumentInFirestore>
+	querySnapshot: DocumentSnapshot<PresenceStatusDocumentInFirestore>
 ): PresenceStatusDocumentInFirestore | null => {
-	if (querySnapshot.empty) return null;
+	if (!querySnapshot.exists()) return null;
 
-	const docData: PresenceStatusDocumentInFirestore =
-		querySnapshot.docs[0].data();
+	const docData: PresenceStatusDocumentInFirestore = querySnapshot.data();
 	const uids = Object.keys(docData);
 	for (const uid of uids) {
 		docData[uid] = {
@@ -41,13 +36,13 @@ export const processPresenceStatusDocumentsSnapshot = (
 
 export const getPresenceStatusesForPageDocRef = () => {
 	const url = window.location.origin + window.location.pathname;
+	const urlHash = md5(url);
 	const collectionRef = collection(
 		getFirestore(),
 		PRESENCE_FIRESTORE_COLLECTION_NAME
 	);
-
-	const queryRef = query(collectionRef, where("url", "==", url), limit(1));
-	return queryRef;
+	const docRef = doc(collectionRef, urlHash);
+	return docRef;
 };
 
 export const setPresenceStatus = async (user: User, status: PresenceStatus) => {
