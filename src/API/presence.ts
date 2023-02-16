@@ -27,10 +27,6 @@ const getURLHash = () => {
 	const urlHash = md5(url);
 	return urlHash;
 };
-const collectionRef = collection(
-	getFirestore(),
-	PRESENCE_FIRESTORE_COLLECTION_NAME
-);
 
 export const processPresenceStatusDocumentsSnapshot = (
 	querySnapshot: DocumentSnapshot<PresenceStatusDocumentInFirestore>
@@ -52,6 +48,10 @@ export const processPresenceStatusDocumentsSnapshot = (
 
 export const getPresenceStatusesForPageDocRef = () => {
 	const urlHash = getURLHash();
+	const collectionRef = collection(
+		getFirestore(),
+		PRESENCE_FIRESTORE_COLLECTION_NAME
+	);
 	const docRef = doc(collectionRef, urlHash);
 	return docRef;
 };
@@ -59,6 +59,10 @@ export const getPresenceStatusesForPageDocRef = () => {
 export const setPresenceStatus = async (user: User, status: PresenceStatus) => {
 	try {
 		const urlHash = getURLHash();
+		const collectionRef = collection(
+			getFirestore(),
+			PRESENCE_FIRESTORE_COLLECTION_NAME
+		);
 		const docRef = doc(collectionRef, urlHash);
 		const updates = {
 			[user.uid + "-" + tabUniqueId]: {
@@ -78,6 +82,10 @@ export const setPresenceStatus = async (user: User, status: PresenceStatus) => {
 export const removePresenceStatus = async (uid: string) => {
 	try {
 		const urlHash = getURLHash();
+		const collectionRef = collection(
+			getFirestore(),
+			PRESENCE_FIRESTORE_COLLECTION_NAME
+		);
 		const updates = { [uid + "-" + tabUniqueId]: deleteField() };
 		const docRef = doc(collectionRef, urlHash);
 		await setDoc(docRef, updates, { merge: true });
@@ -90,6 +98,10 @@ export const removePresenceStatus = async (uid: string) => {
 export const deleteStaleEntriesInCurrentPagePresence = async () => {
 	try {
 		const urlHash = getURLHash();
+		const collectionRef = collection(
+			getFirestore(),
+			PRESENCE_FIRESTORE_COLLECTION_NAME
+		);
 		const metadataDocRef = doc(
 			collectionRef,
 			urlHash,
