@@ -18,6 +18,10 @@ import {
 import usePageCommentsStore from "../state/pageComments";
 import useMarkPresence from "./useMarkPresence";
 
+// Selection and Notes
+import useOnSelectionChange from "../components/Selections/useOnSelectionChange";
+import RenderDOMSelection from "../components/Selections/RenderDOMSelection";
+
 import AppContainerDiv from "./AppContainerDiv";
 
 const LoggedInAppFragments = () => {
@@ -46,6 +50,8 @@ const KoreroApp = () => {
 	const [user] = useAuth();
 	const [, setPageComments] = usePageCommentsStore();
 
+	useOnSelectionChange();
+
 	useEffect(() => {
 		if (user?.uid && !appHidden) {
 			const unsubscribeToRealtimePageComments = onSnapshot(
@@ -71,6 +77,7 @@ const KoreroApp = () => {
 		<AppContainerDiv>
 			<CentralActionHandle />
 			<LoggedInAppFragments />
+			<RenderDOMSelection />
 		</AppContainerDiv>
 	);
 };
