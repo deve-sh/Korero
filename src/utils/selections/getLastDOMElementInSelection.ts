@@ -9,7 +9,7 @@ const getLastDOMElementInSelection = (parent?: Element): Element | null => {
 		if (!range || !range.commonAncestorContainer) return null;
 
 		lastElementInSelection = Array.from(
-			(range.commonAncestorContainer as HTMLElement).children
+			(range.commonAncestorContainer as HTMLElement).children || []
 		).pop();
 	}
 

@@ -32,7 +32,13 @@ const RenderSelectionDivs = () => {
 					width: rect.width,
 					height: rect.height,
 				};
-				return <SelectionRectangle key={index + rect.x} {...props} />;
+				return (
+					<SelectionRectangle
+						className="range-selection-div"
+						key={index + rect.x}
+						{...props}
+					/>
+				);
 			})}
 		</>
 	) : (
