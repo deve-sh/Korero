@@ -16,10 +16,10 @@ const useCommentBoxOnSelection = () => {
 
 	useEffect(() => {
 		if (
+			user &&
+			isCommentingOn &&
 			currentSelectionRangeCount &&
-			!currentComment &&
-			!isCommentingOn &&
-			user
+			!currentComment
 		) {
 			const [anchorNode, selectionAnchorPosition] =
 				getSelectionAnchorNodeAndPosition() || [];

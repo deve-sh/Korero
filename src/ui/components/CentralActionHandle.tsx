@@ -102,6 +102,8 @@ const RenderActionOptions = ({
 				)
 					return;
 
+				if (window.getSelection()?.rangeCount) return;
+
 				if (isClickFromInsideACommentThread(event)) return;
 
 				event.preventDefault();
