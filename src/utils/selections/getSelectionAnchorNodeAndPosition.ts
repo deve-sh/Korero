@@ -1,12 +1,14 @@
 import getPositionRelativeToElement from "../getPositionRelativeToElement";
 import getLastDOMElementInSelection from "./getLastDOMElementInSelection";
 
-const getSelectionAnchorNodeAndRelativePosition = () => {
+const getSelectionAnchorNodeAndSelectionOffset = ():
+	| [HTMLElement, { x: number; y: number }]
+	| null => {
 	const lastElementInSelection = getLastDOMElementInSelection() as HTMLElement;
 	if (!lastElementInSelection) return null;
 
 	const lastRangeSelectionDiv = document.querySelector(
-		"range-selection-div:last-child"
+		".range-selection-div:last-child"
 	);
 	if (!lastRangeSelectionDiv) return null;
 
@@ -15,11 +17,13 @@ const getSelectionAnchorNodeAndRelativePosition = () => {
 	).pop();
 	if (!lastRangeSelectionDivEndpoints) return null;
 
-	const positionRelativeToAnchorNode = getPositionRelativeToElement(
+	return [
 		lastElementInSelection,
-		lastRangeSelectionDivEndpoints.x,
-		lastRangeSelectionDivEndpoints.y
-	);
+		{
+			x: lastRangeSelectionDivEndpoints.right,
+			y: lastRangeSelectionDivEndpoints.bottom,
+		},
+	];
 };
 
-export default getSelectionAnchorNodeAndRelativePosition;
+export default getSelectionAnchorNodeAndSelectionOffset;

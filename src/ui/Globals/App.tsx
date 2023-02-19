@@ -20,6 +20,7 @@ import useMarkPresence from "./useMarkPresence";
 
 // Selection and Notes
 import useOnSelectionChange from "../components/Selections/useOnSelectionChange";
+import useCommentBoxOnSelection from "../components/Selections/useCommentBoxOnSelection";
 import RenderDOMSelection from "../components/Selections/RenderDOMSelection";
 
 import AppContainerDiv from "./AppContainerDiv";
@@ -50,7 +51,9 @@ const KoreroApp = () => {
 	const [user] = useAuth();
 	const [, setPageComments] = usePageCommentsStore();
 
+	// Selection and Notes
 	useOnSelectionChange();
+	useCommentBoxOnSelection();
 
 	useEffect(() => {
 		if (user?.uid && !appHidden) {
