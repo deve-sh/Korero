@@ -17,6 +17,7 @@ import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
 
 import getAllRelevantDeviceInformation from "../../utils/getAllRelevantDeviceInformation";
+import getPositionRelativeToElement from "../../utils/getPositionRelativeToElement";
 
 import { createCommentForPage } from "../../API/comments";
 import type CommentInDatabase from "../../types/CommentInDatabase";
@@ -147,17 +148,11 @@ const CommentCreationBox = () => {
 
 	const positionRelativeToClickedElement = useMemo(() => {
 		if (!clickedDOMElement || !currentComment) return {};
-		const relativeLeft =
-			currentComment.position.x - clickedDOMElement.offsetLeft;
-		const relativeTop = currentComment.position.y - clickedDOMElement.offsetTop;
-		const relativeLeftPercentage = relativeLeft / clickedDOMElement.clientWidth;
-		const relativeTopPercentage = relativeTop / clickedDOMElement.clientHeight;
-		return {
-			relativeLeft,
-			relativeTop,
-			relativeLeftPercentage,
-			relativeTopPercentage,
-		};
+		return getPositionRelativeToElement(
+			clickedDOMElement,
+			currentComment.position.x,
+			currentComment.position.y
+		);
 	}, [
 		clickedDOMElement,
 		currentComment?.position?.x,
