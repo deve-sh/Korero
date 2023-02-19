@@ -15,6 +15,7 @@ import SendIcon from "../../icons/Send";
 import useAuth from "../state/auth";
 import useIsCommentingOn from "../state/commenting";
 import useCurrentComment from "../state/currentComment";
+import useCurrentDOMSelectionRangeCount from "../state/currentDOMSelectionRangeCount";
 
 import getAllRelevantDeviceInformation from "../../utils/getAllRelevantDeviceInformation";
 import getPositionRelativeToElement from "../../utils/getPositionRelativeToElement";
@@ -96,6 +97,7 @@ const createInsertableCommentDocumentForDatabase = ({
 const CommentCreationBox = () => {
 	const commentCreationBoxRef = useRef<HTMLDivElement | null>(null);
 	const [currentComment, setCurrentComment] = useCurrentComment();
+	const [, setCurrentSelectionRangeCount] = useCurrentDOMSelectionRangeCount();
 	const [, setIsCommentingOn] = useIsCommentingOn();
 	const [user] = useAuth();
 
@@ -110,6 +112,7 @@ const CommentCreationBox = () => {
 	};
 
 	const hideCommentCreationBox = () => {
+		setCurrentSelectionRangeCount(0);
 		setCurrentComment(null);
 		setIsCommentingOn(true);
 	};
