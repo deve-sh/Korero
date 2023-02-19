@@ -1,4 +1,4 @@
-const getElementUniqueSelector = (element: HTMLElement) => {
+export const getElementUniqueSelector = (element: HTMLElement | Element) => {
 	const path: string[] = [];
 	let parent: ParentNode | null;
 
