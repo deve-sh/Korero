@@ -11,11 +11,13 @@ import styled from "@emotion/styled";
 import MessageBubblesIcon from "../../../icons/MessageBubbles";
 import SendIcon from "../../../icons/Send";
 
+import useAuth from "../../state/auth";
+import useExpandedCommentThreadId from "../../state/expandedCommentThread";
+
 import type CommentInDatabase from "../../../types/CommentInDatabase";
 import Comment from "./Comment";
 import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
 import { addReplyToComment } from "../../../API/comments";
-import useAuth from "../../state/auth";
 import getAllRelevantDeviceInformation from "../../../utils/getAllRelevantDeviceInformation";
 
 interface Props {
@@ -128,7 +130,11 @@ const determineAndAdjustCommentThreadPosition = (
 };
 
 const CommentThread = ({ comment }: Props) => {
-	const [isExpanded, setIsExpanded] = useState(false);
+	const [expandedThreadId, setExpandedThreadId] = useExpandedCommentThreadId();
+	const isExpanded = useMemo(
+		() => expandedThreadId === comment?.id,
+		[comment?.id, expandedThreadId]
+	);
 
 	const [leftAndTop, setLeftAndTop] = useState<{ left: number; top: number }>({
 		left: 0,
@@ -153,7 +159,7 @@ const CommentThread = ({ comment }: Props) => {
 			const onClick = (event: PointerEvent | MouseEvent) => {
 				if (!commentThreadWrapperRef.current) return;
 				if (!commentThreadWrapperRef.current.contains(event.target as Node))
-					setIsExpanded(false);
+					setExpandedThreadId(null);
 			};
 
 			window.addEventListener("click", onClick);
@@ -218,7 +224,7 @@ const CommentThread = ({ comment }: Props) => {
 					"comment-thread-message-bubble-icon-wrapper" +
 					(!isExpanded ? " visible" : "")
 				}
-				onClick={() => setIsExpanded(true)}
+				onClick={() => setExpandedThreadId(comment.id as string)}
 			>
 				<MessageBubblesIcon height="1rem" width="1rem" />
 				{nCommentsLabel && (
