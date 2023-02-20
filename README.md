@@ -1,6 +1,103 @@
-# Korero: A simple Collaborative Commenting Tool
+# 💬 Korero: A simple Collaborative Commenting Tool
 
-WIP
+Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://vercel.com/blog/introducing-commenting-on-preview-deployments). I was mesmerized with how seamless and beautiful they were. So this repository is a personal project to make the same setup available as an open-source distributable for everyone to use, especially those who do not use Vercel.
+
+### Features
+
+- Real-time comments and threads page-wide, anywhere on the page.
+- Presence Indicators to tell you who's live.
+- Real-time selections and notes on the page with commenting attached to them.
+- Device Information available on each comment for easier debugging.
+
+### Required setup
+
+1. Create a [Firebase Project](https://console.firebase.google.com/) and create a web project inside it.
+2. Enable Firestore in the project, navigate to `Rules` and paste the following:
+
+```rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	function isSignedIn() {
+        let allowedEmailRegex = '...';  // You can remove this if you want anyone on your project to be able to comment.
+    	return request.auth != null &&
+            request.auth.uid != null &&
+            request.auth.token.email.matches(regex);    // Can be removed
+    }
+
+    match /korero-comments/{commentId} {
+      allow read, create, update, delete: if isSignedIn();
+    }
+
+    match /korero-presence/{url} {
+      allow read, create, update: if isSignedIn();
+    }
+  }
+}
+```
+
+3. Enable Firebase Authentication and choose any of Google or GitHub based Sign In Options. Firebase Authentication has 0 config setup for Google so it would be easier to setup.
+
+### Intialization
+
+First copy your Firebase config from your project's dashboard:
+
+```javascript
+const firebaseCredentials = {
+  apiKey: ...,
+  projectId: ...,
+  ...
+};
+```
+
+Simply include the Korero snippet as a script tag in your page:
+
+```html
+<script type="text/javascript" src="https://unpkg.com/korero/umd.js"></script>
+<script type="text/javascript">
+	const koreroInstance = new korero({ firebaseCredentials }).initialize();
+</script>
+```
+
+Or include Korero as a dependency in your project:
+
+```bash
+npm i korero
+```
+
+```javascript
+import Korero from "korero";
+
+const koreroInstance = new korero({ firebaseCredentials }).initialize();
+```
+
+### Configuration Options
+
+Configuration for your Korero instance can be passed as `options` in the argument object.
+
+| Argument Name          | Required | Type                | Description                                                                                                                                                                                               |
+| ---------------------- | -------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `allowedSignInMethods` | Yes      | `String[]`          | Array of sign-in methods. Possible values: `google`, `github`                                                                                                                                             |
+| `isUserAllowed`        | No       | `(User) => Boolean` | Function that receives the user object after sign-in, should return a promise that resolves with a boolean of whether the user is allowed to use Korero or not                                            |
+| `currentSiteVersion`   | No       | `String`            | A simple string that can help determine changes between two site versions, this is for the times you want to ensure comments added on one version of the page do not show up on an older or newer version |
+| `whitelistedHosts`     | No       | `String[]`          | A set of hosts your Korero instance is allowed to run.                                                                                                                                                    |
+
+### Handling Route Change
+
+When your users change routes, you would want the current comments list to go away. The setup built-in with Korero works as expected for most applications, but you would have to add some more configuration for it to work with frontend frameworks and libraries that handle user routing on the client-side.
+
+Refer to your framework-specific guide on listening to route changes.
+
+For example, you would do something like this with Next.js:
+
+```javascript
+const { pathname } = useRouter();
+
+useEffect(() => {
+	koreroInstance.unmount();
+	koreroInstance.initialize();
+}, [pathname]);
+```
 
 ### Why Firebase?
 
@@ -30,11 +127,11 @@ import Korero from "korero"; // Adds size of korero to bundle.
 
 // Do this instead
 
-process.env.SHOW_KORERO && <script src="https://cdnjs.com/.../korero.min.js" />;
+process.env.SHOW_KORERO && <script src="https://unpkg.com/korero/umd.js" />;
 
 // and then
 if (process.env.SHOW_KORERO && window.korero) {
-	new Korero({ firebaseCredentials }).initialize();
+	new korero({ firebaseCredentials }).initialize();
 }
 ```
 
@@ -44,4 +141,10 @@ One might wonder, with all the JSX in the world, why is a UI-level feature libra
 
 The answer is compatibility. I wanted Korero to function in any environment, even a simple HTML-CSS website opened via a File URL should be able to run it. It should be agnostic to the Framework or library that’s consuming it.
 
-Korero does use React internally but the only thing the end-consumer has to worry about is to call `initialize` on the Korero class.
+Korero does use React internally but the only thing the end-consumer has to worry about is to call `initialize` on the Korero class and it will work with any library, any framework.
+
+### Contribution and Feedback
+
+Contributions are welcome, just fork the repository and make the change you please and open a pull-request.
+
+For feedback and bugs, open an issue or discussion on this repository.
