@@ -113,7 +113,12 @@ const determineAndAdjustCommentThreadPosition = (
 	const domElement = document.querySelector(
 		comment.element.selector
 	) as HTMLElement;
-	if (!domElement) return { left: 0, top: 0 }; // Element removed between builds/deploys or no longer there.
+	if (
+		!domElement ||
+		!domElement.getBoundingClientRect().width ||
+		!domElement.getBoundingClientRect().height
+	)
+		return { left: 0, top: 0 }; // Element removed between builds/deploys or no longer there due to responsive styling.
 
 	const { offsetLeft: domElementLeft, offsetTop: domElementTop } = domElement;
 
