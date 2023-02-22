@@ -10,6 +10,7 @@
 
 import { getElementUniqueSelector } from "../getAllIdentifyingAttrsForElement";
 import getParentElementOfSpecialNode from "./getParentElementOfSpecialNode";
+import isValidSelection from "./isValidSelection";
 
 interface SerializedRangeElementProperty {
 	element: string;
@@ -44,7 +45,7 @@ const calculateRangePropertiesForNode = (
 
 export const serializeSelectionRange = () => {
 	const selection = window.getSelection();
-	if (!selection || !selection.rangeCount || selection.type === "Caret") return;
+	if (!selection || !isValidSelection()) return;
 
 	const range = selection.getRangeAt(0);
 	if (!range) return;

@@ -14,6 +14,7 @@ import mountClickListenerForComment from "../../utils/mountClickListenerForComme
 import unmountClickListenerForComment from "../../utils/unmountClickListenerForComments";
 import getAllIdentifyingAttributesForElement from "../../utils/getAllIdentifyingAttrsForElement";
 import isClickFromInsideACommentThread from "../../utils/isClickFromInsideACommentThread";
+import isValidSelection from "../../utils/selections/isValidSelection";
 
 import GitHubIcon from "../../icons/GitHub";
 import GoogleIcon from "../../icons/Google";
@@ -102,7 +103,7 @@ const RenderActionOptions = ({
 				)
 					return;
 
-				if (window.getSelection()?.rangeCount) return;
+				if (window.getSelection() && isValidSelection()) return;
 
 				if (isClickFromInsideACommentThread(event)) return;
 
