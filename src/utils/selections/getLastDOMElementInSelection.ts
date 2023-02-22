@@ -3,7 +3,8 @@ const getLastDOMElementInSelection = (parent?: Element): Element | null => {
 
 	if (!lastElementInSelection) {
 		const selection = window.getSelection();
-		if (!selection || !selection.rangeCount) return null;
+		if (!selection || !selection.rangeCount || selection.type === "Caret")
+			return null;
 
 		const range = selection.getRangeAt(0);
 		if (!range || !range.commonAncestorContainer) return null;
