@@ -80,3 +80,14 @@ liveServer.start(liveServerParams);
 const liveServerURL = "http://localhost:5500/dev/index.html";
 console.log("Live Server started at: " + liveServerURL);
 open(liveServerURL);
+
+const exitHandler = () => {
+	try {
+		liveServer.shutdown();
+	} catch {}
+};
+process.once("exit", exitHandler);
+process.once("SIGINT", exitHandler);
+process.once("SIGUSR1", exitHandler);
+process.once("SIGUSR2", exitHandler);
+process.once("uncaughtException", exitHandler);
