@@ -22,6 +22,7 @@ const SelectionRectangle = styled.div<RectanglePositionProps>`
 	background: #c88383;
 	opacity: 0.4;
 	position: fixed;
+	z-index: 1000;
 `;
 
 export default SelectionRectangle;

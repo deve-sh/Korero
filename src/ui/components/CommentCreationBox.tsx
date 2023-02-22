@@ -33,6 +33,7 @@ const CommentCreationBoxDiv = styled.div<{
 	position: fixed;
 	width: 12.5rem;
 	background: #ffffff;
+	z-index: 1002;
 	${(props) => (props.$left ? "left: " + props.$left + ";" : "")}
 	${(props) => (props.$top ? "top: " + props.$top + ";" : "")}
 

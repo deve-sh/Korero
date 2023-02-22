@@ -36,6 +36,7 @@ const CompleteCommentThreadWrapper = styled.div<{
 	${(props) => (props.$left ? "left: " + props.$left + ";" : "")}
 	${(props) => (props.$top ? "top: " + props.$top + ";" : "")}
     ${(props) => (!props.$top && !props.$left ? "display: none;" : "")}
+	z-index: 1001;
 `;
 
 const CommentThreadContainer = styled.div`
