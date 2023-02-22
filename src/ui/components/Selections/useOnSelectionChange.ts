@@ -1,15 +1,18 @@
 import { useEffect } from "react";
+
+import useAppHidden from "../../state/appHidden";
 import useIsCommentingOn from "../../state/commenting";
 import useCurrentDOMSelectionRangeCount from "../../state/currentDOMSelectionRangeCount";
 
 let debounceTimeout: NodeJS.Timeout;
 
 const useOnDOMSelectionChange = () => {
+	const [isAppHidden] = useAppHidden();
 	const [isCommentingOn] = useIsCommentingOn();
 	const [, setCurrentSelectionRangeCount] = useCurrentDOMSelectionRangeCount();
 
 	useEffect(() => {
-		if (isCommentingOn) {
+		if (isCommentingOn && !isAppHidden) {
 			const onSelectionChange = () => {
 				if (debounceTimeout) clearTimeout(debounceTimeout);
 				debounceTimeout = setTimeout(() => {
@@ -21,7 +24,7 @@ const useOnDOMSelectionChange = () => {
 				document.removeEventListener("selectionchange", onSelectionChange);
 			};
 		}
-	}, [isCommentingOn]);
+	}, [isCommentingOn, isAppHidden]);
 };
 
 export default useOnDOMSelectionChange;
