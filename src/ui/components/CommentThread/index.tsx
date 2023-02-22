@@ -19,6 +19,7 @@ import Comment from "./Comment";
 import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
 import { addReplyToComment } from "../../../API/comments";
 import getAllRelevantDeviceInformation from "../../../utils/getAllRelevantDeviceInformation";
+import { deserializeAndApplySelectionRange } from "../../../utils/selections/serializeAndRestoreSelection";
 
 interface Props {
 	comment: CommentInDatabase;
@@ -149,6 +150,17 @@ const CommentThread = ({ comment }: Props) => {
 	useEffect(() => {
 		setLeftAndTop(determineAndAdjustCommentThreadPosition(comment));
 	}, [comment]);
+
+	useEffect(() => {
+		// For comments added against selections, restore selection based on range stored in database.
+		if (
+			isExpanded &&
+			comment.isNote &&
+			comment.selectionRange?.start &&
+			comment.selectionRange?.end
+		)
+			deserializeAndApplySelectionRange(comment.selectionRange);
+	}, [comment, isExpanded]);
 
 	useEffect(() => {
 		const onWindowResize = () =>
