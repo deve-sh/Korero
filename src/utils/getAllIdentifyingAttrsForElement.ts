@@ -3,10 +3,12 @@ export const getElementUniqueSelector = (element: HTMLElement | Element) => {
 	let parent: ParentNode | null;
 
 	while ((parent = element.parentNode)) {
+		const children = Array.from(parent.children);
+		const elementIndex = children.indexOf(element);
 		path.unshift(
-			`${element.tagName}:nth-child(${
-				Array.from(parent.children).indexOf(element) + 1
-			})`
+			`${element.tagName}${
+				elementIndex ? `:nth-child(${elementIndex + 1})` : ""
+			}`
 		);
 		element = parent as HTMLElement;
 	}
