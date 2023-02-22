@@ -128,10 +128,10 @@ const CommentCreationBox = () => {
 		});
 	};
 
-	const hideCommentCreationBox = () => {
+	const hideCommentCreationBox = (keepCommentingOn = true) => {
 		setCurrentSelectionRangeCount(0);
 		setCurrentComment(null);
-		setIsCommentingOn(true);
+		setIsCommentingOn(keepCommentingOn);
 	};
 
 	useEffect(() => {
@@ -201,12 +201,15 @@ const CommentCreationBox = () => {
 					},
 					element: currentComment.element,
 					content: currentComment.content,
+					isNote: currentComment.isNote,
+					attachedNoteExcerpt: currentComment.attachedNoteExcerpt,
+					selectionRange: currentComment.selectionRange,
 				});
 			const { error } = await createCommentForPage(commentInsertableInDatabase);
 			setInserting(false);
 
 			if (error) console.error(error);
-			else hideCommentCreationBox();
+			else hideCommentCreationBox(false);
 		},
 		[inserting, currentComment, positionRelativeToClickedElement]
 	);
