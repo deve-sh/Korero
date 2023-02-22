@@ -1,4 +1,6 @@
-import getPositionRelativeToElement from "../getPositionRelativeToElement";
+// Why not just get the cursor position instead of the anchor?
+// Because selections can even happen via keyboard as well.
+
 import getLastDOMElementInSelection from "./getLastDOMElementInSelection";
 
 const getSelectionAnchorNodeAndSelectionOffset = ():
