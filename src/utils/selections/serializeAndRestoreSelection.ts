@@ -12,7 +12,7 @@ import { getElementUniqueSelector } from "../getAllIdentifyingAttrsForElement";
 import getParentElementOfSpecialNode from "./getParentElementOfSpecialNode";
 import isValidSelection from "./isValidSelection";
 
-interface SerializedRangeElementProperty {
+export interface SerializedRangeElementProperty {
 	element: string;
 	isSpecialNode: boolean;
 	indexInParent: number;

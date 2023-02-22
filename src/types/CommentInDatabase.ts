@@ -1,6 +1,7 @@
 import type { Timestamp } from "firebase/firestore";
 import type User from "./User";
 import type RelativeDeviceInfo from "./RelevantDeviceInfo";
+import type { SerializedRangeElementProperty } from "../utils/selections/serializeAndRestoreSelection";
 
 export default interface CommentInDatabase {
 	id?: string;
@@ -28,6 +29,13 @@ export default interface CommentInDatabase {
 	replies: CommentReply[];
 	createdAt: Date | Timestamp;
 	updatedAt: Date | Timestamp;
+	// properties exclusively for comments on top of selections or notes
+	isNote?: boolean;
+	selectionRange?: {
+		start: SerializedRangeElementProperty;
+		end: SerializedRangeElementProperty;
+	} | null;
+	attachedNoteExcerpt?: string;
 }
 
 export interface CommentReply {

@@ -71,16 +71,31 @@ export const SendIconButton = styled.button`
 	cursor: pointer;
 `;
 
+const AttachedNoteExcerptDiv = styled.div`
+	padding: 0.75rem;
+	margin-top: 0.75rem;
+	font-size: 0.875rem;
+	border-radius: 0.25rem;
+	background: #efefef;
+	color: #707070;
+`;
+
 const createInsertableCommentDocumentForDatabase = ({
 	user,
 	position,
 	content,
 	element,
+	isNote,
+	attachedNoteExcerpt,
+	selectionRange,
 }: {
 	user: CommentInDatabase["user"];
 	content: CommentInDatabase["content"];
 	position: CommentInDatabase["position"];
 	element: CommentInDatabase["element"];
+	isNote?: CommentInDatabase["isNote"];
+	attachedNoteExcerpt?: CommentInDatabase["attachedNoteExcerpt"];
+	selectionRange?: CommentInDatabase["selectionRange"];
 }): CommentInDatabase => ({
 	user,
 	position,
@@ -92,6 +107,9 @@ const createInsertableCommentDocumentForDatabase = ({
 	resolved: false,
 	createdAt: serverTimestamp() as Timestamp,
 	updatedAt: serverTimestamp() as Timestamp,
+	isNote: isNote || false,
+	attachedNoteExcerpt: attachedNoteExcerpt || "",
+	selectionRange: selectionRange || null,
 });
 
 const CommentCreationBox = () => {
@@ -104,7 +122,6 @@ const CommentCreationBox = () => {
 	const onCommentTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		event.persist();
 		if (!currentComment) return;
-
 		setCurrentComment({
 			...currentComment,
 			content: event.target.value,
@@ -207,6 +224,11 @@ const CommentCreationBox = () => {
 					placeholder="Enter Your Comment here."
 					required
 				/>
+				{!!currentComment.attachedNoteExcerpt && (
+					<AttachedNoteExcerptDiv>
+						{currentComment.attachedNoteExcerpt}
+					</AttachedNoteExcerptDiv>
+				)}
 				<SendIconButton disabled={inserting} title="Send" type="submit">
 					<SendIcon />
 				</SendIconButton>

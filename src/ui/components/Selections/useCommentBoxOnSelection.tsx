@@ -8,6 +8,8 @@ import useAppHidden from "../../state/appHidden";
 
 import getSelectionAnchorNodeAndPosition from "../../../utils/selections/getSelectionAnchorNodeAndPosition";
 import getAllIdentifyingAttributesForElement from "../../../utils/getAllIdentifyingAttrsForElement";
+import getContentFromDOMSelection from "../../../utils/selections/getContentFromDOMSelection";
+import { serializeSelectionRange } from "../../../utils/selections/serializeAndRestoreSelection";
 
 const useCommentBoxOnSelection = () => {
 	const [currentSelectionRangeCount] = useCurrentDOMSelectionRangeCount();
@@ -36,6 +38,9 @@ const useCommentBoxOnSelection = () => {
 				content: "",
 				element: elementIdentifiers,
 				position: selectionAnchorPosition,
+				isNote: true,
+				attachedNoteExcerpt: getContentFromDOMSelection() as string,
+				selectionRange: serializeSelectionRange(),
 			});
 			setIsCommentingOn(false);
 		}
