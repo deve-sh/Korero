@@ -13,6 +13,7 @@ import SendIcon from "../../../icons/Send";
 
 import useAuth from "../../state/auth";
 import useExpandedCommentThreadId from "../../state/expandedCommentThread";
+import useCurrentDOMSelectionRangeCount from "../../state/currentDOMSelectionRangeCount";
 
 import type CommentInDatabase from "../../../types/CommentInDatabase";
 import Comment from "./Comment";
@@ -137,6 +138,7 @@ const determineAndAdjustCommentThreadPosition = (
 
 const CommentThread = ({ comment }: Props) => {
 	const [expandedThreadId, setExpandedThreadId] = useExpandedCommentThreadId();
+	const [, setCurrentSelectionRangeCount] = useCurrentDOMSelectionRangeCount();
 	const isExpanded = useMemo(
 		() => expandedThreadId === comment?.id,
 		[comment?.id, expandedThreadId]
@@ -160,6 +162,9 @@ const CommentThread = ({ comment }: Props) => {
 			comment.selectionRange?.end
 		)
 			deserializeAndApplySelectionRange(comment.selectionRange);
+
+		// Clear any residue divisions highlighting a selection.
+		return () => setCurrentSelectionRangeCount(0);
 	}, [comment, isExpanded]);
 
 	useEffect(() => {
