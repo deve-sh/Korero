@@ -18,11 +18,10 @@ export const signOut = async () => {
 
 export const signIn = async (method: SupportedAuthMethods) => {
 	try {
-		let data;
-		if (method === "google")
-			data = await signInWithPopup(getAuth(), new GoogleAuthProvider());
-		if (method === "github")
-			data = await signInWithPopup(getAuth(), new GithubAuthProvider());
+		const data = await signInWithPopup(
+			getAuth(),
+			method === "google" ? new GoogleAuthProvider() : new GithubAuthProvider()
+		);
 
 		if (!data || !data.user)
 			throw new Error("Something went wrong with user sign in.");
