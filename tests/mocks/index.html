@@ -3,21 +3,34 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Korero - Testing HTML File</title>
-		<script type="text/javascript" src="/umd.js"></script>
 	</head>
 	<body>
 		<div id="root" />
 	</body>
-	<script defer>
-		const koreroInstance = new korero({
-			firebaseCredentials: {
-				apiKey: "AIzaSyB9gzKWNP-hDxsNbkycaAcMG4REMkYNhUU",
-				authDomain: "korero-197fb.firebaseapp.com",
-				projectId: "korero-197fb",
-				appId: "1:540066561678:web:99756164c3272bb7d113df",
-			},
-			options: { allowedSignInMethods: ["google", "github"] },
+	<script type="text/javascript" id="korero-initializer">
+		const koreroScript = document.createElement("script");
+		koreroScript.setAttribute("type", "text/javascript");
+		koreroScript.setAttribute("id", "korero");
+		koreroScript.setAttribute("src", "umd.js");
+
+		koreroScript.addEventListener("load", () => {
+			window.koreroLoaded = true;
+			window.koreroInstance = new korero({
+				firebaseCredentials: {
+					apiKey: "AIzaSyB9gzKWNP-hDxsNbkycaAcMG4REMkYNhUU",
+					authDomain: "korero-197fb.firebaseapp.com",
+					projectId: "korero-197fb",
+					appId: "1:540066561678:web:99756164c3272bb7d113df",
+				},
+				options: { allowedSignInMethods: ["google", "github"] },
+			});
+			window.koreroInstance.initialize();
+			window.koreroDivInitialized = true;
+
+			window.unmountKorero = () => window.koreroInstance.unmount();
 		});
-		koreroInstance.initialize();
+
+		document.body.appendChild(koreroScript);
+		window.koreroScriptAdded = true;
 	</script>
 </html>

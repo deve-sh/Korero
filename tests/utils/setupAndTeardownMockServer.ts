@@ -16,10 +16,14 @@ const setupAndTeardownMockServer = async (
 ) => {
 	let mockCustomerWebsiteServer;
 	test.beforeAll(async () => {
+		if (mockCustomerWebsiteServer) return;
 		mockCustomerWebsiteServer = await setupMockCustomerWebsiteServer();
 	});
 	test.afterAll(async () => {
-		if (mockCustomerWebsiteServer) mockCustomerWebsiteServer.close();
+		if (mockCustomerWebsiteServer) {
+			mockCustomerWebsiteServer.close();
+			mockCustomerWebsiteServer = null;
+		}
 	});
 };
 
