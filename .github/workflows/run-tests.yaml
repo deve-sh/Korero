@@ -26,4 +26,5 @@ jobs:
         if: ${{ env.RUN_TESTS == 'true' }}
         run: |
           npm install
+          npx playwright install --with-deps
           npm run test
