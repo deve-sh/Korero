@@ -12,7 +12,7 @@
 		"dev": "node ./scripts/dev.js",
 		"prepub": "node ./scripts/prepub.js",
 		"pub": "cd dist && npm publish",
-		"test": "npx playwright test"
+		"test": "npx playwright test --workers=1"
 	},
 	"keywords": [],
 	"author": "Devesh Kumar",
