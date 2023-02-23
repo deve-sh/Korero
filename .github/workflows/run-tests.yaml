@@ -1,0 +1,29 @@
+name: Run Tests On JS Client Library
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Run Tests On Library
+    runs-on: ubuntu-latest
+    env:
+      RUN_TESTS: ${{ secrets.RUN_TESTS }}
+
+    steps:
+      - name: Checkout Files
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        if: ${{ env.RUN_TESTS == 'true' }}
+        with:
+          node-version: 14
+
+      - name: Run Tests
+        if: ${{ env.RUN_TESTS == 'true' }}
+        run: |
+          npm install
+          npm run test
