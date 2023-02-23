@@ -1,0 +1,23 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Korero - Testing HTML File</title>
+		<script type="text/javascript" src="/umd.js"></script>
+	</head>
+	<body>
+		<div id="root" />
+	</body>
+	<script defer>
+		const koreroInstance = new korero({
+			firebaseCredentials: {
+				apiKey: "AIzaSyB9gzKWNP-hDxsNbkycaAcMG4REMkYNhUU",
+				authDomain: "korero-197fb.firebaseapp.com",
+				projectId: "korero-197fb",
+				appId: "1:540066561678:web:99756164c3272bb7d113df",
+			},
+			options: { allowedSignInMethods: ["google", "github"] },
+		});
+		koreroInstance.initialize();
+	</script>
+</html>
