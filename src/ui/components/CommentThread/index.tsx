@@ -14,6 +14,7 @@ import SendIcon from "../../../icons/Send";
 import useAuth from "../../state/auth";
 import useExpandedCommentThreadId from "../../state/expandedCommentThread";
 import useCurrentDOMSelectionRangeCount from "../../state/currentDOMSelectionRangeCount";
+import useCommentReplyContent from "../../state/commentReply";
 
 import Comment from "./Comment";
 import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
@@ -154,7 +155,11 @@ const CommentThread = ({ comment, renderingKey }: Props) => {
 
 	useEffect(() => {
 		setLeftAndTop(determineAndAdjustCommentThreadPosition(comment));
-	}, [comment]);
+	}, [comment, renderingKey]);
+
+	useEffect(() => {
+		return () => setReplyContent("");
+	}, []);
 
 	useEffect(() => {
 		// For comments added against selections, restore selection based on range stored in database.
@@ -186,7 +191,7 @@ const CommentThread = ({ comment, renderingKey }: Props) => {
 	}, [isExpanded]);
 
 	const [user] = useAuth();
-	const [replyContent, setReplyContent] = useState("");
+	const [replyContent, setReplyContent] = useCommentReplyContent();
 	const onReplyTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		event.persist();
 		setReplyContent(event.target.value);
