@@ -36,7 +36,7 @@ const CompleteCommentThreadWrapper = styled.div<{
 	$top: number;
 	className: string;
 }>`
-	position: fixed;
+	position: absolute;
 	cursor: default;
 	${(props) => (props.$left ? "left: " + props.$left + "px;" : "")}
 	${(props) => (props.$top ? "top: " + props.$top + "px;" : "")}
