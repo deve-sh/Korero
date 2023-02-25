@@ -1,6 +1,6 @@
 {
 	"name": "korero",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "A snippet that enables team communication for your app on any webpage.",
 	"main": "index.js",
 	"scripts": {
