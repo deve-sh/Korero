@@ -120,7 +120,10 @@ const RenderActionOptions = ({
 					user,
 					content: "",
 					element: elementIdentifiers,
-					position: { x: pageX, y: pageY },
+					position: {
+						x: pageX + document.body.scrollLeft,
+						y: pageY + document.body.scrollTop,
+					},
 				});
 				setIsCommentingOn(false);
 			};
