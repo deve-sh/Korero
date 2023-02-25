@@ -170,13 +170,6 @@ const CommentThread = ({ comment, renderingKey }: Props) => {
 		return () => setCurrentSelectionRangeCount(0);
 	}, [comment, isExpanded, renderingKey]);
 
-	useEffect(() => {
-		const onWindowResize = () =>
-			setLeftAndTop(determineAndAdjustCommentThreadPosition(comment));
-		window.addEventListener("resize", onWindowResize);
-		return () => window.removeEventListener("resize", onWindowResize);
-	}, [renderingKey]);
-
 	const commentThreadWrapperRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
