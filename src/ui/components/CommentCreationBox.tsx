@@ -30,7 +30,7 @@ const CommentCreationBoxDiv = styled.div<{
 	border-radius: 0.25rem;
 	box-shadow: 0px 8px 30px rgb(0 0 0 / 25%);
 	padding: 0.875rem;
-	position: fixed;
+	position: absolute;
 	width: 12.5rem;
 	background: #ffffff;
 	z-index: 1002;
