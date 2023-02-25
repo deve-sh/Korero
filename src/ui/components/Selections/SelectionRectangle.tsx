@@ -21,7 +21,7 @@ const SelectionRectangle = styled.div<RectanglePositionProps>`
 	height: ${(props) => props.height}px;
 	background: #c88383;
 	opacity: 0.4;
-	position: fixed;
+	position: absolute;
 	z-index: 1000;
 `;
 
