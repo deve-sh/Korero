@@ -15,12 +15,16 @@ import useAuth from "../../state/auth";
 import useExpandedCommentThreadId from "../../state/expandedCommentThread";
 import useCurrentDOMSelectionRangeCount from "../../state/currentDOMSelectionRangeCount";
 
-import type CommentInDatabase from "../../../types/CommentInDatabase";
 import Comment from "./Comment";
 import { CommentCreationTextarea, SendIconButton } from "../CommentCreationBox";
+
+import type CommentInDatabase from "../../../types/CommentInDatabase";
 import { addReplyToComment } from "../../../API/comments";
 import getAllRelevantDeviceInformation from "../../../utils/getAllRelevantDeviceInformation";
 import { deserializeAndApplySelectionRange } from "../../../utils/selections/serializeAndRestoreSelection";
+
+import getElementOffsetTop from "../../../utils/getElementOffsetTop";
+import getElementOffsetLeft from "../../../utils/getElementOffsetLeft";
 
 interface Props {
 	comment: CommentInDatabase;
@@ -117,6 +121,7 @@ const determineAndAdjustCommentThreadPosition = (
 	const domElement = document.querySelector(
 		comment.element.selector
 	) as HTMLElement;
+
 	if (
 		!domElement ||
 		!domElement.getBoundingClientRect().width ||
@@ -124,15 +129,13 @@ const determineAndAdjustCommentThreadPosition = (
 	)
 		return { left: 0, top: 0 }; // Element removed between builds/deploys or no longer there due to responsive styling.
 
-	const { offsetLeft: domElementLeft, offsetTop: domElementTop } = domElement;
-
 	// Adjusting the percentage that the comment was added with to the element initially.
 	const finalLeft =
-		domElementLeft +
+		getElementOffsetLeft(domElement) +
 		(comment.position.relative.relativeLeftPercentage || 0) *
 			domElement.clientWidth;
 	const finalTop =
-		domElementTop +
+		getElementOffsetTop(domElement) +
 		(comment.position.relative.relativeTopPercentage || 0) *
 			domElement.clientHeight;
 	return { left: finalLeft, top: finalTop };
@@ -153,7 +156,7 @@ const CommentThread = ({ comment, renderingKey }: Props) => {
 
 	useEffect(() => {
 		setLeftAndTop(determineAndAdjustCommentThreadPosition(comment));
-	}, [comment, renderingKey]);
+	}, [comment]);
 
 	useEffect(() => {
 		// For comments added against selections, restore selection based on range stored in database.
