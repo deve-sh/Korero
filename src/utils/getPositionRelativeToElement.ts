@@ -1,15 +1,14 @@
+import getElementOffsetLeft from "./getElementOffsetLeft";
+import getElementOffsetTop from "./getElementOffsetTop";
+
 const getPositionRelativeToElement = (
 	element: HTMLElement,
 	x: number,
 	y: number
 ) => {
-	const relativeLeft = x - element.offsetLeft;
-	const relativeTop = y - element.offsetTop;
-	const relativeLeftPercentage = relativeLeft / element.clientWidth;
-	const relativeTopPercentage = relativeTop / element.clientHeight;
+	const relativeLeftPercentage = x / getElementOffsetLeft(element);
+	const relativeTopPercentage = y / getElementOffsetTop(element);
 	return {
-		relativeLeft,
-		relativeTop,
 		relativeLeftPercentage,
 		relativeTopPercentage,
 	};

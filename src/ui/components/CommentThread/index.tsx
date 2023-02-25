@@ -130,14 +130,12 @@ const determineAndAdjustCommentThreadPosition = (
 		return { left: 0, top: 0 }; // Element removed between builds/deploys or no longer there due to responsive styling.
 
 	// Adjusting the percentage that the comment was added with to the element initially.
+	const domElementTop = getElementOffsetTop(domElement);
+	const domElementLeft = getElementOffsetLeft(domElement);
 	const finalLeft =
-		getElementOffsetLeft(domElement) +
-		(comment.position.relative.relativeLeftPercentage || 0) *
-			domElement.clientWidth;
+		(comment.position.relative.relativeLeftPercentage || 1) * domElementLeft;
 	const finalTop =
-		getElementOffsetTop(domElement) +
-		(comment.position.relative.relativeTopPercentage || 0) *
-			domElement.clientHeight;
+		(comment.position.relative.relativeTopPercentage || 1) * domElementTop;
 	return { left: finalLeft, top: finalTop };
 };
 

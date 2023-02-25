@@ -1,8 +1,10 @@
-const getElementOffsetLeft = (element?: HTMLElement): number => {
-	if (!element) return 0;
+const getElementOffsetLeft = (element: HTMLElement): number => {
+	const box = element.getBoundingClientRect();
 	return (
-		getElementOffsetLeft(element.offsetParent as HTMLElement) +
-		element.offsetLeft
+		document.body.scrollLeft +
+		box.left +
+		window.pageXOffset -
+		document.documentElement.clientLeft
 	);
 };
 
