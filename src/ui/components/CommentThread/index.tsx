@@ -24,6 +24,7 @@ import { deserializeAndApplySelectionRange } from "../../../utils/selections/ser
 
 interface Props {
 	comment: CommentInDatabase;
+	renderingKey: number; // This is used for forcing this component to re-evaluate and re-render
 }
 
 const CompleteCommentThreadWrapper = styled.div<{
@@ -137,7 +138,7 @@ const determineAndAdjustCommentThreadPosition = (
 	return { left: finalLeft, top: finalTop };
 };
 
-const CommentThread = ({ comment }: Props) => {
+const CommentThread = ({ comment, renderingKey }: Props) => {
 	const [expandedThreadId, setExpandedThreadId] = useExpandedCommentThreadId();
 	const [, setCurrentSelectionRangeCount] = useCurrentDOMSelectionRangeCount();
 	const isExpanded = useMemo(
@@ -152,7 +153,7 @@ const CommentThread = ({ comment }: Props) => {
 
 	useEffect(() => {
 		setLeftAndTop(determineAndAdjustCommentThreadPosition(comment));
-	}, [comment]);
+	}, [comment, renderingKey]);
 
 	useEffect(() => {
 		// For comments added against selections, restore selection based on range stored in database.
@@ -166,14 +167,14 @@ const CommentThread = ({ comment }: Props) => {
 
 		// Clear any residue divisions highlighting a selection.
 		return () => setCurrentSelectionRangeCount(0);
-	}, [comment, isExpanded]);
+	}, [comment, isExpanded, renderingKey]);
 
 	useEffect(() => {
 		const onWindowResize = () =>
 			setLeftAndTop(determineAndAdjustCommentThreadPosition(comment));
 		window.addEventListener("resize", onWindowResize);
 		return () => window.removeEventListener("resize", onWindowResize);
-	}, []);
+	}, [renderingKey]);
 
 	const commentThreadWrapperRef = useRef<HTMLDivElement | null>(null);
 

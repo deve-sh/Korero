@@ -24,6 +24,7 @@ import useCommentBoxOnSelection from "../components/Selections/useCommentBoxOnSe
 import RenderDOMSelection from "../components/Selections/RenderDOMSelection";
 
 import AppContainerDiv from "./AppContainerDiv";
+import useRerenderCommentsOnPaint from "./useRerenderCommentsOnPaint";
 
 const LoggedInAppFragments = () => {
 	const [user] = useAuth();
@@ -31,12 +32,18 @@ const LoggedInAppFragments = () => {
 
 	useMarkPresence();
 
+	const commentsRenderingKey = useRerenderCommentsOnPaint(); // The value of this changes whenever there is a UI level change in root element.
+
 	if (!user) return <></>;
 	return (
 		<>
 			<CommentCreationBox />
-			{pageComments.map((comment) => (
-				<CommentThread comment={comment} key={comment.id} />
+			{pageComments.map((comment, index) => (
+				<CommentThread
+					comment={comment}
+					key={comment.id + (commentsRenderingKey + index).toString()}
+					renderingKey={commentsRenderingKey}
+				/>
 			))}
 		</>
 	);
