@@ -9,14 +9,13 @@ const useRerenderCommentsOnPaint = () => {
 			return () => {};
 
 		const { rootElement: elementToObserve } = configStore.get();
-		const domMutationObserver = new MutationObserver((event) => {
+		const domMutationObserver = new MutationObserver(() => {
 			// UI changed in the app's root element.
 			// Update the key prop for all comments for them to remount/rerender.
 			setCommentsRenderingKey((current) => current + 1);
 		});
 		domMutationObserver.observe(elementToObserve, {
 			subtree: true,
-			attributes: true,
 			childList: true,
 		});
 		const resiseObserver = new ResizeObserver(() => {
