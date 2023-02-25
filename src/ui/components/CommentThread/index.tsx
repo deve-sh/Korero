@@ -34,8 +34,8 @@ const CompleteCommentThreadWrapper = styled.div<{
 }>`
 	position: fixed;
 	cursor: default;
-	${(props) => (props.$left ? "left: " + props.$left + ";" : "")}
-	${(props) => (props.$top ? "top: " + props.$top + ";" : "")}
+	${(props) => (props.$left ? "left: " + props.$left + "px;" : "")}
+	${(props) => (props.$top ? "top: " + props.$top + "px;" : "")}
     ${(props) => (!props.$top && !props.$left ? "display: none;" : "")}
 	z-index: 1001;
 `;

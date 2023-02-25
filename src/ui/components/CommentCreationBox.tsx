@@ -34,8 +34,8 @@ const CommentCreationBoxDiv = styled.div<{
 	width: 12.5rem;
 	background: #ffffff;
 	z-index: 1002;
-	${(props) => (props.$left ? "left: " + props.$left + ";" : "")}
-	${(props) => (props.$top ? "top: " + props.$top + ";" : "")}
+	${(props) => (props.$left ? "left: " + props.$left + "px;" : "")}
+	${(props) => (props.$top ? "top: " + props.$top + "px;" : "")}
 
 	form {
 		margin-block-end: 0;

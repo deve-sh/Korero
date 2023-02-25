@@ -116,6 +116,8 @@ const RenderActionOptions = ({
 				// Get clicked element's position and the clicked position + percentage
 				const { pageX, pageY } = event;
 
+				console.log(pageX, pageY, target);
+
 				setCurrentComment({
 					user,
 					content: "",

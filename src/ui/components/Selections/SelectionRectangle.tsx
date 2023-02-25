@@ -13,12 +13,12 @@ interface RectanglePositionProps {
 }
 
 const SelectionRectangle = styled.div<RectanglePositionProps>`
-	top: ${(props) => props.top};
-	left: ${(props) => props.left};
-	right: ${(props) => props.right};
-	bottom: ${(props) => props.bottom};
-	width: ${(props) => props.width};
-	height: ${(props) => props.height};
+	top: ${(props) => props.top}px;
+	left: ${(props) => props.left}px;
+	right: ${(props) => props.right}px;
+	bottom: ${(props) => props.bottom}px;
+	width: ${(props) => props.width}px;
+	height: ${(props) => props.height}px;
 	background: #c88383;
 	opacity: 0.4;
 	position: fixed;
