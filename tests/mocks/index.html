@@ -22,7 +22,10 @@
 					projectId: "korero-197fb",
 					appId: "1:540066561678:web:99756164c3272bb7d113df",
 				},
-				options: { allowedSignInMethods: ["google", "github"] },
+				options: {
+					allowedSignInMethods: ["google", "github"],
+					rootElement: document.getElementById("root"),
+				},
 			});
 			window.koreroInstance.initialize();
 			window.koreroDivInitialized = true;

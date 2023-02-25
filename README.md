@@ -55,7 +55,11 @@ Simply include the Korero snippet as a script tag in your page:
 ```html
 <script type="text/javascript" src="https://unpkg.com/korero/umd.js"></script>
 <script type="text/javascript">
-	const koreroInstance = new korero({ firebaseCredentials }).initialize();
+	const rootElement = document.getElementById("root"); // Your application's root element, where all DOM operations happen via your library or framework
+	const koreroInstance = new korero({
+		firebaseCredentials,
+		options: { supportedAuthMethods: ["google", "github"], rootElement },
+	}).initialize();
 </script>
 ```
 
@@ -68,7 +72,11 @@ npm i korero
 ```javascript
 import Korero from "korero";
 
-const koreroInstance = new korero({ firebaseCredentials }).initialize();
+const rootElement = document.getElementById("root");
+const koreroInstance = new Korero({
+	firebaseCredentials,
+	options: { supportedAuthMethods: ["google", "github"], rootElement },
+}).initialize();
 ```
 
 ### Configuration Options
