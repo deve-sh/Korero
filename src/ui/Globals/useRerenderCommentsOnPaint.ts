@@ -5,15 +5,28 @@ import configStore from "../../config";
 const useRerenderCommentsOnPaint = () => {
 	const [commentsRenderingKey, setCommentsRenderingKey] = useState(0);
 	useEffect(() => {
+		if (!("ResizeObserver" in window) || !("MutationObserver" in window))
+			return () => {};
+
 		const { rootElement: elementToObserve } = configStore.get();
-		const observer = new MutationObserver((event) => {
+		const domMutationObserver = new MutationObserver((event) => {
 			// UI changed in the app's root element.
 			// Update the key prop for all comments for them to remount/rerender.
 			setCommentsRenderingKey((current) => current + 1);
 		});
-		observer.observe(elementToObserve, { subtree: true, attributes: true });
-
-		return () => observer.disconnect();
+		domMutationObserver.observe(elementToObserve, {
+			subtree: true,
+			attributes: true,
+			childList: true,
+		});
+		const resiseObserver = new ResizeObserver(() => {
+			setCommentsRenderingKey((current) => current + 1);
+		});
+		resiseObserver.observe(elementToObserve, { box: "border-box" });
+		return () => {
+			domMutationObserver.disconnect();
+			resiseObserver.disconnect();
+		};
 	}, []);
 	return commentsRenderingKey;
 };
