@@ -42,6 +42,7 @@ const CentralActionHandleDiv = styled.div`
 	left: 50%;
 	transform: translateX(-50%);
 	max-width: fit-content;
+	z-index: 2000;
 `;
 
 const ActionButton = styled.button`
