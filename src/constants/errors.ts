@@ -10,3 +10,7 @@ export const INVALID_SIGNIN_METHODS =
 	"Korero: Sign In Methods not passed. Required at least one sign in method. Google, GitHub";
 
 export const INVALID_HOST = "Korero: Hostname unauthorized.";
+
+export const NON_PRESENT_ROOT_ELEMENT = "Korero: Root Element not provided";
+
+export const INVALID_ROOT_ELEMENT = "Korero: Invalid Root Element provided";
