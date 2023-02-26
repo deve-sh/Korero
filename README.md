@@ -1,5 +1,7 @@
 # 💬 Korero: A simple Collaborative Commenting Tool
 
+<p align="center"><img src="assets/logo.png" /></p>
+
 Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://vercel.com/blog/introducing-commenting-on-preview-deployments). I was mesmerized with how seamless and beautiful they were. So this repository is a personal project to make the same setup available as an open-source distributable for everyone to use, especially those who do not use Vercel.
 
 ### Features
@@ -55,10 +57,9 @@ Simply include the Korero snippet as a script tag in your page:
 ```html
 <script type="text/javascript" src="https://unpkg.com/korero/umd.js"></script>
 <script type="text/javascript">
-	const rootElement = document.getElementById("root"); // Your application's root element, where all DOM operations happen via your library or framework
 	const koreroInstance = new korero({
 		firebaseCredentials,
-		options: { supportedAuthMethods: ["google", "github"], rootElement },
+		options: { supportedAuthMethods: ["google", "github"] },
 	}).initialize();
 </script>
 ```
@@ -72,10 +73,9 @@ npm i korero
 ```javascript
 import Korero from "korero";
 
-const rootElement = document.getElementById("root");
 const koreroInstance = new Korero({
 	firebaseCredentials,
-	options: { supportedAuthMethods: ["google", "github"], rootElement },
+	options: { supportedAuthMethods: ["google", "github"] },
 }).initialize();
 ```
 

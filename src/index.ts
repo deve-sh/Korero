@@ -41,13 +41,13 @@ class Korero {
 			!options.whitelistedHosts.includes(window.location.hostname)
 		)
 			throw new Error(INVALID_HOST);
-		if (!options.rootElement) throw new Error(NON_PRESENT_ROOT_ELEMENT);
-		if (
-			options.rootElement === document.head ||
-			options.rootElement === document.body ||
-			options.rootElement === document.head.parentElement
-		)
-			throw new Error(INVALID_ROOT_ELEMENT);
+		// if (!options.rootElement) throw new Error(NON_PRESENT_ROOT_ELEMENT);
+		// if (
+		// 	options.rootElement === document.head ||
+		// 	options.rootElement === document.body ||
+		// 	options.rootElement === document.head.parentElement
+		// )
+		// 	throw new Error(INVALID_ROOT_ELEMENT);
 
 		this.firebaseCredentials = firebaseCredentials;
 		this.apiKey = apiKey || "";
