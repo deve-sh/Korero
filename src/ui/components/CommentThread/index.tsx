@@ -170,11 +170,21 @@ const CommentThread = ({ comment, renderingKey }: Props) => {
 			comment.selectionRange?.end
 		) {
 			deserializeAndApplySelectionRange(comment.selectionRange);
-
-			// Clear any residue divisions highlighting a selection.
-			return () => setCurrentSelectionRangeCount(0);
 		}
 	}, [comment, isExpanded, renderingKey]);
+
+	useEffect(() => {
+		if (
+			isExpanded &&
+			comment.isNote &&
+			comment.selectionRange?.start &&
+			comment.selectionRange?.end
+		) {
+			// Clear any residue divisions highlighting a selection.
+			// Independent of renderingKey
+			return () => setCurrentSelectionRangeCount(0);
+		}
+	}, [isExpanded, comment]);
 
 	const commentThreadWrapperRef = useRef<HTMLDivElement | null>(null);
 
