@@ -99,6 +99,7 @@ export const deserializeAndApplySelectionRange = (serializedRange: {
 	try {
 		range.setStart(rangeStartContainer, startElementProps.rangeOffset);
 		range.setEnd(rangeEndContainer, endElementProps.rangeOffset);
+		window.getSelection()?.removeAllRanges();
 		window.getSelection()?.addRange(range);
 	} catch {}
 };
