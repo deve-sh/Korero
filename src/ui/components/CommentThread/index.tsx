@@ -94,11 +94,11 @@ const NCommentsNotificationBubble = styled.div`
 	background: #d4224c;
 	color: #ffffff;
 	position: absolute;
-	top: -0.35rem;
-	right: -0.35rem;
+	top: -0.5rem;
+	right: -0.5rem;
 	padding: 0.25rem;
 	font-size: 0.5rem;
-	width: 0.625rem;
+	min-width: 1.25rem;
 `;
 
 const AddCommentReplyWrapper = styled.form`
