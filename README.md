@@ -1,6 +1,6 @@
 # 💬 Korero: A simple Collaborative Commenting Tool
 
-<p align="center"><img src="assets/logo.png" /></p>
+<p align="center"><img src="assets/logo.png" alt="Korero Logo" /></p>
 
 Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://vercel.com/blog/introducing-commenting-on-preview-deployments). I was mesmerized with how seamless and beautiful they were. So this repository is a personal project to make the same setup available as an open-source distributable for everyone to use, especially those who do not use Vercel.
 
@@ -10,6 +10,19 @@ Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://
 - Presence Indicators to tell you who's live.
 - Real-time selections and notes on the page with commenting attached to them.
 - Device Information available on each comment for easier debugging.
+- Comments resolution for easy tracing of what's done and what's left.
+
+### Some Screenshots
+
+<p align="center">
+  <img src="assets/Screenshot - Logged Out User.png" alt="Screenshot - Logged Out" width="45%" />
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="assets/Screenshot - Logged In User.png" alt="Screenshot - Logged In" width="45%" />
+</p>
+<p align="center">
+  <img src="assets/Screenshot - Presence and Replies.png" alt="Screenshot - Presence and" width="45%" />&nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="assets/Screenshot - Selection Based.png" alt="Screenshot - Selection Based" width="45%" />
+</p>
 
 ### Required setup
 
