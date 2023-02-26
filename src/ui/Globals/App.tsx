@@ -41,7 +41,7 @@ const LoggedInAppFragments = () => {
 			{pageComments.map((comment, index) => (
 				<CommentThread
 					comment={comment}
-					key={comment.id + (commentsRenderingKey + index).toString()}
+					key={comment.id}
 					renderingKey={commentsRenderingKey}
 				/>
 			))}
