@@ -1,6 +1,6 @@
 # 💬 Korero: A simple Collaborative Commenting Tool
 
-<p align="center"><img src="assets/logo.png" alt="Korero Logo" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/deve-sh/korero/main/assets/logo.png" alt="Korero Logo" /></p>
 
 Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://vercel.com/blog/introducing-commenting-on-preview-deployments). I was mesmerized with how seamless and beautiful they were. So this repository is a personal project to make the same setup available as an open-source distributable for everyone to use, especially those who do not use Vercel.
 
@@ -15,13 +15,13 @@ Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://
 ### Some Screenshots
 
 <p align="center">
-  <img src="assets/Screenshot - Logged Out User.png" alt="Screenshot - Logged Out" width="45%" />
+  <img src="https://raw.githubusercontent.com/deve-sh/korero/main/assets/Screenshot - Logged Out User.png" alt="Screenshot - Logged Out" width="45%" loading="lazy" />
   &nbsp; &nbsp; &nbsp; &nbsp;
-  <img src="assets/Screenshot - Logged In User.png" alt="Screenshot - Logged In" width="45%" />
+  <img src="https://raw.githubusercontent.com/deve-sh/korero/main/assets/Screenshot - Logged In User.png" alt="Screenshot - Logged In" width="45%" loading="lazy" />
 </p>
 <p align="center">
-  <img src="assets/Screenshot - Presence and Replies.png" alt="Screenshot - Presence and" width="45%" />&nbsp; &nbsp; &nbsp; &nbsp;
-  <img src="assets/Screenshot - Selection Based.png" alt="Screenshot - Selection Based" width="45%" />
+  <img src="https://raw.githubusercontent.com/deve-sh/korero/main/assets/Screenshot - Presence and Replies.png" alt="Screenshot - Presence and" width="45%" loading="lazy" />&nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="https://raw.githubusercontent.com/deve-sh/korero/main/assets/Screenshot - Selection Based.png" alt="Screenshot - Selection Based" width="45%" loading="lazy" />
 </p>
 
 ### Required setup
