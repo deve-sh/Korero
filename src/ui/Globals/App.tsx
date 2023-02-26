@@ -38,7 +38,7 @@ const LoggedInAppFragments = () => {
 	return (
 		<>
 			<CommentCreationBox />
-			{pageComments.map((comment, index) => (
+			{pageComments.map((comment) => (
 				<CommentThread
 					comment={comment}
 					key={comment.id}
