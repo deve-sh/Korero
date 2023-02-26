@@ -30,7 +30,7 @@ const useRerenderCommentsOnPaint = () => {
 		// For performance and simplicity, just re-render comments every 2.5 seconds.
 		const interval = setInterval(() => {
 			setCommentsRenderingKey((current) => current + 1);
-		}, 2500);
+		}, 1000);
 		return () => clearInterval(interval);
 	}, []);
 	return commentsRenderingKey;
