@@ -22,6 +22,7 @@ import getPositionRelativeToElement from "../../utils/getPositionRelativeToEleme
 
 import { createCommentForPage } from "../../API/comments";
 import type CommentInDatabase from "../../types/CommentInDatabase";
+import useOnEscapeButtonPress from "../../utils/useOnEscapeButtonPress";
 
 const CommentCreationBoxDiv = styled.div<{
 	$left?: number;
@@ -179,6 +180,8 @@ const CommentCreationBox = () => {
 		currentComment?.position?.x,
 		currentComment?.position?.y,
 	]);
+
+	useOnEscapeButtonPress(hideCommentCreationBox);
 
 	const [inserting, setInserting] = useState(false);
 	const onSubmit = useCallback(

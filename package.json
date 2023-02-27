@@ -1,6 +1,6 @@
 {
 	"name": "korero",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "A snippet that enables team communication for your app on any webpage.",
 	"main": "index.js",
 	"repository": "https://github.com/deve-sh/Korero",

@@ -26,6 +26,7 @@ import { deserializeAndApplySelectionRange } from "../../../utils/selections/ser
 
 import getElementOffsetTop from "../../../utils/getElementOffsetTop";
 import getElementOffsetLeft from "../../../utils/getElementOffsetLeft";
+import useOnEscapeButtonPress from "../../../utils/useOnEscapeButtonPress";
 
 interface Props {
 	comment: CommentInDatabase;
@@ -200,6 +201,7 @@ const CommentThread = ({ comment, renderingKey }: Props) => {
 			return () => window.removeEventListener("click", onClick);
 		}
 	}, [isExpanded]);
+	useOnEscapeButtonPress(() => setExpandedThreadId(null));
 
 	const [user] = useAuth();
 	const [replyContent, setReplyContent] = useCommentReplyContent();
