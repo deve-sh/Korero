@@ -1,10 +1,11 @@
 import type IconArgs from "./IconArgs";
 
-const GoogleIcon = ({ height, width }: IconArgs) => {
+const GoogleIcon = ({ height, width, className }: IconArgs) => {
 	return (
 		<svg
 			stroke="currentColor"
 			fill="currentColor"
+			className={className}
 			strokeWidth="0"
 			viewBox="0 0 488 512"
 			height={height || 24}

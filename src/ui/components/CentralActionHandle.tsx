@@ -75,8 +75,16 @@ const RenderLoginMethods = () => {
 					onClick={() => signInWithMethod(signInMethod)}
 					disabled={signingIn}
 				>
-					{signInMethod === "github" ? <GitHubIcon /> : ""}
-					{signInMethod === "google" ? <GoogleIcon /> : ""}
+					{signInMethod === "github" ? (
+						<GitHubIcon className="github-sign-in-icon" />
+					) : (
+						""
+					)}
+					{signInMethod === "google" ? (
+						<GoogleIcon className="google-sign-in-icon" />
+					) : (
+						""
+					)}
 				</ActionButton>
 			))}
 		</>
@@ -152,7 +160,10 @@ const CentralActionHandle = () => {
 	const [, setAppHidden] = useAppHidden();
 
 	return (
-		<CentralActionHandleDiv ref={centralActionHandleDivRef}>
+		<CentralActionHandleDiv
+			className="central-action-handle"
+			ref={centralActionHandleDivRef}
+		>
 			{!user ? (
 				<>
 					<SignInLabel>Sign In To Comment</SignInLabel> | <RenderLoginMethods />

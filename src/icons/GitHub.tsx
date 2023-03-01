@@ -1,10 +1,11 @@
 import type IconArgs from "./IconArgs";
 
-const GitHubIcon = ({ height, width }: IconArgs) => {
+const GitHubIcon = ({ height, width, className }: IconArgs) => {
 	return (
 		<svg
 			stroke="currentColor"
 			fill="currentColor"
+			className={className}
 			strokeWidth="0"
 			viewBox="0 0 496 512"
 			height={height || 24}
