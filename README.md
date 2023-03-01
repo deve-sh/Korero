@@ -12,6 +12,12 @@ Ever used Figma? Or better yet, Vercel's preview builds [with comments](https://
 - Device Information available on each comment for easier debugging.
 - Comments resolution for easy tracing of what's done and what's left.
 
+#### Good to have / What it can't do yet
+
+Handling of scroll position for deeply nested comments is not possible at this point. So if you have list inside of list inside of list (Or divs), all of which are scrollable and you put a comment inside the deepest div/list item, Korero won't be able to handle it as it depends on the position of the element a comment attaches to.
+
+Although it is a feature I'll be looking to add in the future.
+
 ### Some Screenshots
 
 <p align="center">
